@@ -2,25 +2,46 @@ const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
 const filters=[...document.querySelectorAll('.filter')];
 
 let activeCard=null;
+let ticking=false;
 
 function setActive(card){
   if(activeCard===card)return;
-  cards.forEach(c=>c.classList.toggle('active',c===card));
-  activeCard=card;
+  if(activeCard)activeCard.classList.remove('active');
+  if(card)card.classList.add('active');
+  activeCard=card||null;
 }
 
-const observer=new IntersectionObserver(entries=>{
-  const visible=entries
-    .filter(entry=>entry.isIntersecting && !entry.target.hidden)
-    .sort((a,b)=>b.intersectionRatio-a.intersectionRatio);
-  if(visible[0] && visible[0].intersectionRatio>=0.5)setActive(visible[0].target);
-},{
-  root:null,
-  threshold:[0.25,0.5,0.65,0.8],
-  rootMargin:'-18% 0px -18% 0px'
-});
+function chooseActiveCard(){
+  ticking=false;
+  const visible=cards.filter(card=>!card.hidden);
+  if(!visible.length){setActive(null);return;}
 
-cards.forEach(card=>observer.observe(card));
+  const viewportCenter=window.innerHeight*0.5;
+  let best=null;
+  let bestDistance=Infinity;
+
+  for(const card of visible){
+    const rect=card.getBoundingClientRect();
+    if(rect.bottom<0||rect.top>window.innerHeight)continue;
+    const cardCenter=rect.top+Math.min(rect.height,180)*0.5;
+    const distance=Math.abs(cardCenter-viewportCenter);
+    if(distance<bestDistance){
+      bestDistance=distance;
+      best=card;
+    }
+  }
+
+  if(best)setActive(best);
+}
+
+function scheduleActiveCard(){
+  if(ticking)return;
+  ticking=true;
+  requestAnimationFrame(chooseActiveCard);
+}
+
+addEventListener('scroll',scheduleActiveCard,{passive:true});
+addEventListener('resize',scheduleActiveCard,{passive:true});
 
 filters.forEach(button=>{
   button.addEventListener('click',()=>{
@@ -29,19 +50,17 @@ filters.forEach(button=>{
 
     document.querySelectorAll('.media-card').forEach(card=>{
       const categories=(card.dataset.categories||'').split(' ');
-      card.hidden=filter!=='all' && !categories.includes(filter);
+      card.hidden=filter!=='all'&&!categories.includes(filter);
       if(card.hidden)card.classList.remove('active');
     });
 
     activeCard=null;
-    const firstVisible=cards.find(card=>!card.hidden);
-    if(firstVisible)setTimeout(()=>setActive(firstVisible),60);
+    scheduleActiveCard();
   });
 });
 
-const firstVisible=cards.find(card=>!card.hidden);
-if(firstVisible)setTimeout(()=>setActive(firstVisible),250);
+requestAnimationFrame(chooseActiveCard);
 
 if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+  addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 }
