@@ -4,6 +4,12 @@ const filters=[...document.querySelectorAll('.filter')];
 let activeCard=null;
 let ticking=false;
 
+function setCardSizes(){
+  document.querySelectorAll('.media-card').forEach(card=>{
+    card.style.setProperty('--square-size',Math.round(card.getBoundingClientRect().width)+'px');
+  });
+}
+
 function setActive(card){
   if(activeCard===card)return;
   if(activeCard)activeCard.classList.remove('active');
@@ -16,32 +22,39 @@ function chooseActiveCard(){
   const visible=cards.filter(card=>!card.hidden);
   if(!visible.length){setActive(null);return;}
 
-  const viewportCenter=window.innerHeight*0.5;
-  let best=null;
-  let bestDistance=Infinity;
+  const trigger=window.innerHeight*0.48;
+  let containing=null;
+  let nearest=null;
+  let nearestDistance=Infinity;
 
   for(const card of visible){
     const rect=card.getBoundingClientRect();
-    if(rect.bottom<0||rect.top>window.innerHeight)continue;
-    const cardCenter=rect.top+Math.min(rect.height,180)*0.5;
-    const distance=Math.abs(cardCenter-viewportCenter);
-    if(distance<bestDistance){
-      bestDistance=distance;
-      best=card;
+    if(rect.top<=trigger&&rect.bottom>=trigger){
+      containing=card;
+      break;
+    }
+    const distance=Math.min(Math.abs(rect.top-trigger),Math.abs(rect.bottom-trigger));
+    if(distance<nearestDistance){
+      nearestDistance=distance;
+      nearest=card;
     }
   }
 
-  if(best)setActive(best);
+  setActive(containing||nearest);
 }
 
-function scheduleActiveCard(){
+function schedule(){
   if(ticking)return;
   ticking=true;
   requestAnimationFrame(chooseActiveCard);
 }
 
-addEventListener('scroll',scheduleActiveCard,{passive:true});
-addEventListener('resize',scheduleActiveCard,{passive:true});
+setCardSizes();
+addEventListener('scroll',schedule,{passive:true});
+addEventListener('resize',()=>{
+  setCardSizes();
+  schedule();
+},{passive:true});
 
 filters.forEach(button=>{
   button.addEventListener('click',()=>{
@@ -55,7 +68,10 @@ filters.forEach(button=>{
     });
 
     activeCard=null;
-    scheduleActiveCard();
+    requestAnimationFrame(()=>{
+      setCardSizes();
+      chooseActiveCard();
+    });
   });
 });
 
