@@ -5,6 +5,7 @@ const shareButton=document.getElementById('shareProfile');
 const shareStatus=document.getElementById('shareStatus');
 const resultCount=document.getElementById('resultCount');
 const emptyState=document.getElementById('emptyState');
+const mobileDock=document.querySelector('.mobile-dock');
 
 let activeCard=null;
 let ticking=false;
@@ -142,6 +143,26 @@ if(shareButton){
         shareStatus.textContent='Could not share this link.';
         setTimeout(()=>{if(shareStatus)shareStatus.textContent=''},1800);
       }
+    }
+  });
+}
+
+if(mobileDock){
+  mobileDock.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-dock]');
+    if(!button)return;
+    const action=button.dataset.dock;
+
+    if(action==='top'){
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    if(action==='browse'){
+      document.querySelector('.filter-label-row')?.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+
+    if(action==='share'){
+      shareButton?.click();
     }
   });
 }
