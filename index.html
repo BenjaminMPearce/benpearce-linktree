@@ -4,7 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0f1115" />
-  <meta name="description" content="Benjamin Pearce — filmmaker, writer, director, actor and producer. Watch reviews, sketches, short films, demo reels, music and more." />
+  <meta name="description" content="Benjamin Pearce — filmmaker, writer, director, actor and producer. Watch movie reviews, comedy, short films, demo reels, music and more." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Benjamin Pearce — Films, Reviews & Comedy" />
+  <meta property="og:description" content="Explore Benjamin Pearce's films, reviews, sketches, series, demo reels and production work." />
+  <meta name="twitter:card" content="summary" />
   <title>Benjamin Pearce — Watch</title>
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
@@ -23,7 +27,9 @@
         <a href="https://www.tiktok.com/@bennyp1010?_r=1&_t=ZP-9ALxzcQ5oSM" target="_blank" rel="noreferrer">TikTok</a>
         <a href="https://www.instagram.com/benjaminpearcefilms?stkn=MWQ1Z2F6NXBhb2sxZg==" target="_blank" rel="noreferrer">Instagram</a>
         <a href="https://www.imdb.com/name/nm4910822/?ref_=ext_shr" target="_blank" rel="noreferrer">IMDb</a>
+        <button class="share-button" id="shareProfile" type="button">Share</button>
       </nav>
+      <p class="share-status" id="shareStatus" aria-live="polite"></p>
     </header>
 
     <main>
@@ -32,7 +38,7 @@
           <p class="eyebrow">Explore</p>
           <h2>Scroll. Preview. Watch.</h2>
         </div>
-        <p>Move through Benjamin's channels and series. Cards open into a media preview as they reach the viewing zone.</p>
+        <p>Browse by category or keep scrolling to move through Benjamin's channels, series and production work.</p>
       </section>
 
       <div class="filter-wrap" aria-label="Content filters">
@@ -48,7 +54,7 @@
       <section class="media-feed" aria-label="Benjamin Pearce media channels">
 
         <article class="media-card" data-categories="reviews shorts reels" data-source="youtube">
-          <div class="card-compact">
+          <div class="card-compact" role="button" tabindex="0" aria-expanded="false">
             <div>
               <span class="source-pill">YouTube</span>
               <h3>Benjamin Pearce Films</h3>
@@ -73,7 +79,7 @@
         </article>
 
         <article class="media-card" data-categories="news reviews comedy" data-source="tiktok">
-          <div class="card-compact">
+          <div class="card-compact" role="button" tabindex="0" aria-expanded="false">
             <div>
               <span class="source-pill">TikTok</span>
               <h3>@bennyp1010</h3>
@@ -99,7 +105,7 @@
         </article>
 
         <article class="media-card" data-categories="comedy music" data-source="youtube">
-          <div class="card-compact">
+          <div class="card-compact" role="button" tabindex="0" aria-expanded="false">
             <div>
               <span class="source-pill">YouTube</span>
               <h3>Red Dragon Productions</h3>
@@ -124,7 +130,7 @@
         </article>
 
         <article class="media-card" data-categories="shorts music" data-source="youtube">
-          <div class="card-compact">
+          <div class="card-compact" role="button" tabindex="0" aria-expanded="false">
             <div>
               <span class="source-pill">YouTube</span>
               <h3>Film Arch Entertainment</h3>
