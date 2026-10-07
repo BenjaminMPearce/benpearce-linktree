@@ -269,3 +269,43 @@ body{
   .social-row{gap:8px}
   .social-row a,.share-button{min-height:38px;display:inline-flex;align-items:center}
 }
+
+/* Draft 1 product polish — category UX and responsive desktop treatment */
+.filter-label-row{
+  width:min(100%,var(--max));
+  margin:22px auto 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  color:#7f8791;
+  font-size:.7rem;
+  font-weight:750;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.filter-label-row span:last-child{letter-spacing:0;text-transform:none;font-weight:650}
+.filter-wrap{margin-top:2px}
+.empty-state{
+  width:min(100%,var(--max));
+  margin:0 auto 70px;
+  padding:28px 20px;
+  text-align:center;
+  border:1px dashed rgba(255,255,255,.12);
+  border-radius:18px;
+  color:var(--muted);
+}
+.empty-state strong{display:block;color:var(--text);margin-bottom:5px}
+@media (min-width:900px){
+  :root{--max:820px}
+  .hero{padding-top:48px}
+  .portrait{width:90px;height:90px}
+  .media-card{height:108px}
+  .card-compact{min-height:108px;padding-left:23px;padding-right:23px}
+  .static-card{height:108px!important}
+}
+@media (max-width:680px){
+  .filter-label-row{margin-top:18px}
+  .filter-wrap{scroll-snap-type:x proximity}
+  .filter{scroll-snap-align:start}
+}
