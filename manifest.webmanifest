@@ -1,11 +1,17 @@
 {
-  "name":"Benjamin Pearce — Watch",
-  "short_name":"Ben Pearce",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#0b0d10",
-  "theme_color":"#0f1115",
-  "icons":[
-    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
-  ]
+  "name": "Benjamin Pearce",
+  "short_name": "Ben Pearce",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090b0f",
+  "theme_color": "#090b0f",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "description": "Films, reviews, sketches, series and production work from Benjamin Pearce."
 }
