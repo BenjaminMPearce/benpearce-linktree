@@ -1,5 +1,7 @@
 const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
 const filters=[...document.querySelectorAll('.filter')];
+const shareButton=document.getElementById('shareProfile');
+const shareStatus=document.getElementById('shareStatus');
 
 let activeCard=null;
 let ticking=false;
@@ -26,6 +28,13 @@ function stopMedia(card){
   requestAnimationFrame(()=>{iframe.dataset.src=src});
 }
 
+function syncExpandedState(){
+  cards.forEach(card=>{
+    const compact=card.querySelector('.card-compact[role="button"]');
+    if(compact)compact.setAttribute('aria-expanded',String(card===activeCard));
+  });
+}
+
 function setActive(card){
   if(activeCard===card)return;
   const previous=activeCard;
@@ -38,6 +47,7 @@ function setActive(card){
     activeCard.classList.add('active');
     loadMedia(activeCard);
   }
+  syncExpandedState();
 }
 
 function updateActiveCard(){
@@ -48,11 +58,9 @@ function updateActiveCard(){
   const line=window.innerHeight*0.50;
   let candidate=null;
 
-  // The card opens exactly when its TOP edge reaches the screen midpoint.
-  // Using the top edge keeps the trigger stable even while the card changes height.
   for(const card of visible){
     const top=card.getBoundingClientRect().top;
-    if(top<=line) candidate=card;
+    if(top<=line)candidate=card;
     else break;
   }
 
@@ -65,7 +73,25 @@ function schedule(){
   requestAnimationFrame(updateActiveCard);
 }
 
+cards.forEach(card=>{
+  const compact=card.querySelector('.card-compact[role="button"]');
+  if(!compact)return;
+
+  const toggle=()=>{
+    setActive(activeCard===card?null:card);
+  };
+
+  compact.addEventListener('click',toggle);
+  compact.addEventListener('keydown',event=>{
+    if(event.key==='Enter'||event.key===' '){
+      event.preventDefault();
+      toggle();
+    }
+  });
+});
+
 setCardSizes();
+syncExpandedState();
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',()=>{setCardSizes();schedule()},{passive:true});
 
@@ -81,9 +107,36 @@ filters.forEach(button=>{
     });
 
     activeCard=null;
+    syncExpandedState();
     requestAnimationFrame(()=>{setCardSizes();updateActiveCard()});
   });
 });
+
+if(shareButton){
+  shareButton.addEventListener('click',async()=>{
+    const shareData={
+      title:'Benjamin Pearce',
+      text:"Benjamin Pearce — films, reviews, sketches and production work.",
+      url:location.href
+    };
+
+    try{
+      if(navigator.share){
+        await navigator.share(shareData);
+        if(shareStatus)shareStatus.textContent='';
+      }else{
+        await navigator.clipboard.writeText(location.href);
+        if(shareStatus)shareStatus.textContent='Link copied.';
+        setTimeout(()=>{if(shareStatus)shareStatus.textContent=''},1800);
+      }
+    }catch(error){
+      if(error?.name!=='AbortError'&&shareStatus){
+        shareStatus.textContent='Could not share this link.';
+        setTimeout(()=>{if(shareStatus)shareStatus.textContent=''},1800);
+      }
+    }
+  });
+}
 
 requestAnimationFrame(updateActiveCard);
 
