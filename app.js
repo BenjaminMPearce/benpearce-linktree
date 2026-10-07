@@ -17,48 +17,43 @@ function setActive(card){
   activeCard=card||null;
 }
 
-function chooseActiveCard(){
+function updateActiveCard(){
   ticking=false;
+
   const visible=cards.filter(card=>!card.hidden);
   if(!visible.length){setActive(null);return;}
 
-  const target=window.innerHeight*0.62;
-  const activationBand=Math.max(72,Math.min(110,window.innerHeight*0.12));
+  const mobile=window.matchMedia('(max-width:680px)').matches;
+  const target=window.innerHeight*(mobile?0.66:0.58);
+  const band=mobile?92:118;
 
   let best=null;
-  let bestDistance=Infinity;
+  let distance=Infinity;
 
   for(const card of visible){
     const rect=card.getBoundingClientRect();
-    const compactCenter=rect.top+47;
-    const distance=Math.abs(compactCenter-target);
-
-    if(distance<bestDistance){
-      bestDistance=distance;
-      best=card;
-    }
+    const center=rect.top+Math.min(rect.height,mobile?92:102)/2;
+    const d=Math.abs(center-target);
+    if(d<distance){distance=d;best=card;}
   }
 
-  setActive(bestDistance<=activationBand?best:null);
+  setActive(distance<=band?best:null);
 }
 
 function schedule(){
   if(ticking)return;
   ticking=true;
-  requestAnimationFrame(chooseActiveCard);
+  requestAnimationFrame(updateActiveCard);
 }
 
 setCardSizes();
 addEventListener('scroll',schedule,{passive:true});
-addEventListener('resize',()=>{
-  setCardSizes();
-  schedule();
-},{passive:true});
+addEventListener('resize',()=>{setCardSizes();schedule()},{passive:true});
 
 filters.forEach(button=>{
   button.addEventListener('click',()=>{
     const filter=button.dataset.filter;
-    filters.forEach(b=>b.classList.toggle('active',b===button));
+    filters.forEach(item=>item.classList.toggle('active',item===button));
 
     document.querySelectorAll('.media-card').forEach(card=>{
       const categories=(card.dataset.categories||'').split(' ');
@@ -67,14 +62,11 @@ filters.forEach(button=>{
     });
 
     activeCard=null;
-    requestAnimationFrame(()=>{
-      setCardSizes();
-      chooseActiveCard();
-    });
+    requestAnimationFrame(()=>{setCardSizes();updateActiveCard()});
   });
 });
 
-requestAnimationFrame(chooseActiveCard);
+requestAnimationFrame(updateActiveCard);
 
 if('serviceWorker' in navigator){
   addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
