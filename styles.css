@@ -222,3 +222,50 @@ footer a{text-decoration:none;color:#bdc2ca}
 }
 .card-compact{transition:opacity .12s ease!important}
 .card-expanded{transition:opacity .14s ease .04s!important}
+
+/* Draft 1 polish — sharing, touch behavior and accessibility */
+body{
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.share-button{
+  appearance:none;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.055);
+  color:inherit;
+  padding:8px 13px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:.82rem;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.share-button:hover,.share-button:focus-visible{
+  background:rgba(255,255,255,.095);
+  border-color:rgba(255,255,255,.18);
+}
+.share-button:active{transform:scale(.97)}
+.share-status{
+  min-height:1rem;
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:.72rem;
+}
+.card-compact[role="button"]{cursor:pointer}
+.card-compact[role="button"]:focus-visible{
+  outline:2px solid rgba(255,255,255,.85);
+  outline-offset:-4px;
+  border-radius:inherit;
+}
+.filter:focus-visible,.visit-button:focus-visible,.social-row a:focus-visible,.static-link:focus-visible{
+  outline:2px solid rgba(255,255,255,.9);
+  outline-offset:3px;
+}
+@media (max-width:680px){
+  .app-shell{
+    padding-left:max(16px,env(safe-area-inset-left));
+    padding-right:max(16px,env(safe-area-inset-right));
+  }
+  .social-row{gap:8px}
+  .social-row a,.share-button{min-height:38px;display:inline-flex;align-items:center}
+}
