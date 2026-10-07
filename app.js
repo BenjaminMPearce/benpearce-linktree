@@ -1,15 +1,24 @@
 const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
+const allCards=[...document.querySelectorAll('.media-card')];
 const filters=[...document.querySelectorAll('.filter')];
 const shareButton=document.getElementById('shareProfile');
 const shareStatus=document.getElementById('shareStatus');
+const resultCount=document.getElementById('resultCount');
+const emptyState=document.getElementById('emptyState');
 
 let activeCard=null;
 let ticking=false;
 
 function setCardSizes(){
-  document.querySelectorAll('.media-card').forEach(card=>{
+  allCards.forEach(card=>{
     card.style.setProperty('--square-size',Math.round(card.getBoundingClientRect().width)+'px');
   });
+}
+
+function updateResultCount(){
+  const visible=allCards.filter(card=>!card.hidden).length;
+  if(resultCount)resultCount.textContent=visible+` link${visible===1?'':'s'}`;
+  if(emptyState)emptyState.hidden=visible!==0;
 }
 
 function loadMedia(card){
@@ -55,15 +64,12 @@ function updateActiveCard(){
   const visible=cards.filter(card=>!card.hidden);
   if(!visible.length){setActive(null);return;}
 
-  const line=window.innerHeight*0.50;
+  const line=window.innerHeight*.5;
   let candidate=null;
-
   for(const card of visible){
-    const top=card.getBoundingClientRect().top;
-    if(top<=line)candidate=card;
+    if(card.getBoundingClientRect().top<=line)candidate=card;
     else break;
   }
-
   setActive(candidate);
 }
 
@@ -76,11 +82,7 @@ function schedule(){
 cards.forEach(card=>{
   const compact=card.querySelector('.card-compact[role="button"]');
   if(!compact)return;
-
-  const toggle=()=>{
-    setActive(activeCard===card?null:card);
-  };
-
+  const toggle=()=>setActive(activeCard===card?null:card);
   compact.addEventListener('click',toggle);
   compact.addEventListener('keydown',event=>{
     if(event.key==='Enter'||event.key===' '){
@@ -92,6 +94,8 @@ cards.forEach(card=>{
 
 setCardSizes();
 syncExpandedState();
+updateResultCount();
+
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',()=>{setCardSizes();schedule()},{passive:true});
 
@@ -100,15 +104,20 @@ filters.forEach(button=>{
     const filter=button.dataset.filter;
     filters.forEach(item=>item.classList.toggle('active',item===button));
 
-    document.querySelectorAll('.media-card').forEach(card=>{
+    allCards.forEach(card=>{
       const categories=(card.dataset.categories||'').split(' ');
-      card.hidden=filter!=='all'&&!categories.includes(filter);
+      const universal=card.classList.contains('static-card');
+      card.hidden=filter!=='all'&&!universal&&!categories.includes(filter);
       if(card.hidden)card.classList.remove('active');
     });
 
-    activeCard=null;
-    syncExpandedState();
-    requestAnimationFrame(()=>{setCardSizes();updateActiveCard()});
+    if(activeCard?.hidden)activeCard=null;
+    updateResultCount();
+
+    requestAnimationFrame(()=>{
+      setCardSizes();
+      updateActiveCard();
+    });
   });
 });
 
@@ -119,7 +128,6 @@ if(shareButton){
       text:"Benjamin Pearce — films, reviews, sketches and production work.",
       url:location.href
     };
-
     try{
       if(navigator.share){
         await navigator.share(shareData);
