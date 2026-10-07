@@ -6,6 +6,8 @@ const shareStatus=document.getElementById('shareStatus');
 const resultCount=document.getElementById('resultCount');
 const emptyState=document.getElementById('emptyState');
 const mobileDock=document.querySelector('.mobile-dock');
+const feedHint=document.getElementById('feedHint');
+let feedHintDismissed=false;
 
 let activeCard=null;
 let ticking=false;
@@ -75,6 +77,10 @@ function updateActiveCard(){
 }
 
 function schedule(){
+  if(!feedHintDismissed && window.scrollY>120){
+    feedHintDismissed=true;
+    feedHint?.classList.add('hidden');
+  }
   if(ticking)return;
   ticking=true;
   requestAnimationFrame(updateActiveCard);
