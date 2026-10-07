@@ -3,6 +3,7 @@ const filters=[...document.querySelectorAll('.filter')];
 
 let activeCard=null;
 let ticking=false;
+const compactHeight=window.matchMedia('(max-width:680px)').matches?92:102;
 
 function setCardSizes(){
   document.querySelectorAll('.media-card').forEach(card=>{
@@ -10,34 +11,55 @@ function setCardSizes(){
   });
 }
 
+function loadMedia(card){
+  const iframe=card?.querySelector('iframe[data-src]');
+  if(!iframe||iframe.src)return;
+  iframe.src=iframe.dataset.src;
+  iframe.addEventListener('load',()=>card.classList.add('media-loaded'),{once:true});
+}
+
+function stopMedia(card){
+  const iframe=card?.querySelector('iframe.media-embed');
+  if(!iframe||!iframe.src)return;
+  const src=iframe.dataset.src;
+  iframe.removeAttribute('src');
+  card.classList.remove('media-loaded');
+  requestAnimationFrame(()=>{iframe.dataset.src=src});
+}
+
 function setActive(card){
   if(activeCard===card)return;
-  if(activeCard)activeCard.classList.remove('active');
-  if(card)card.classList.add('active');
+  const previous=activeCard;
+  if(previous){
+    previous.classList.remove('active');
+    stopMedia(previous);
+  }
   activeCard=card||null;
+  if(activeCard){
+    activeCard.classList.add('active');
+    loadMedia(activeCard);
+  }
 }
 
 function updateActiveCard(){
   ticking=false;
-
   const visible=cards.filter(card=>!card.hidden);
   if(!visible.length){setActive(null);return;}
 
-  const mobile=window.matchMedia('(max-width:680px)').matches;
-  const target=window.innerHeight*(mobile?0.66:0.58);
-  const band=mobile?92:118;
+  const line=window.innerHeight*0.50;
+  const anchors=visible.map(card=>({
+    card,
+    y:card.getBoundingClientRect().top+compactHeight/2
+  }));
 
-  let best=null;
-  let distance=Infinity;
-
-  for(const card of visible){
-    const rect=card.getBoundingClientRect();
-    const center=rect.top+Math.min(rect.height,mobile?92:102)/2;
-    const d=Math.abs(center-target);
-    if(d<distance){distance=d;best=card;}
+  let candidate=null;
+  for(const item of anchors){
+    if(item.y<=line)candidate=item.card;
+    else break;
   }
 
-  setActive(distance<=band?best:null);
+  // Nothing opens until the first compact card actually reaches the middle line.
+  setActive(candidate);
 }
 
 function schedule(){
