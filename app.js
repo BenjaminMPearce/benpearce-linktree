@@ -3,7 +3,6 @@ const filters=[...document.querySelectorAll('.filter')];
 
 let activeCard=null;
 let ticking=false;
-const compactHeight=window.matchMedia('(max-width:680px)').matches?92:102;
 
 function setCardSizes(){
   document.querySelectorAll('.media-card').forEach(card=>{
@@ -47,18 +46,16 @@ function updateActiveCard(){
   if(!visible.length){setActive(null);return;}
 
   const line=window.innerHeight*0.50;
-  const anchors=visible.map(card=>({
-    card,
-    y:card.getBoundingClientRect().top+compactHeight/2
-  }));
-
   let candidate=null;
-  for(const item of anchors){
-    if(item.y<=line)candidate=item.card;
+
+  // The card opens exactly when its TOP edge reaches the screen midpoint.
+  // Using the top edge keeps the trigger stable even while the card changes height.
+  for(const card of visible){
+    const top=card.getBoundingClientRect().top;
+    if(top<=line) candidate=card;
     else break;
   }
 
-  // Nothing opens until the first compact card actually reaches the middle line.
   setActive(candidate);
 }
 
