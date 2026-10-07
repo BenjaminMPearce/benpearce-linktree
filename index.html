@@ -41,6 +41,10 @@
         <p>Browse by category or keep scrolling to move through Benjamin's channels, series and production work.</p>
       </section>
 
+      <div class="filter-label-row">
+        <span>Browse by category</span>
+        <span id="resultCount" aria-live="polite"></span>
+      </div>
       <div class="filter-wrap" aria-label="Content filters">
         <button class="filter active" data-filter="all">All</button>
         <button class="filter" data-filter="reviews">Movie Reviews</button>
@@ -51,7 +55,7 @@
         <button class="filter" data-filter="music">Music</button>
       </div>
 
-      <section class="media-feed" aria-label="Benjamin Pearce media channels">
+      <section class="media-feed" id="mediaFeed" aria-label="Benjamin Pearce media channels">
 
         <article class="media-card" data-categories="reviews shorts reels" data-source="youtube">
           <div class="card-compact" role="button" tabindex="0" aria-expanded="false">
@@ -175,6 +179,10 @@
           </a>
         </article>
       </section>
+      <div class="empty-state" id="emptyState" hidden>
+        <strong>No channel matches that category yet.</strong>
+        <span>Try another category.</span>
+      </div>
     </main>
 
     <footer>
