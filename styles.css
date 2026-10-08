@@ -88,3 +88,7 @@ footer{width:min(100%,var(--max));margin:auto;padding:20px 0 92px;border-top:1px
 /* Player iframe is moved outside its source card; reveal it on load. */
 .watch-content .media-embed{opacity:1!important}
 .watch-content .player-status{display:none!important}
+
+/* Native portrait TikTok iframe; fallback link remains below. */
+.watch-content .tiktok-embed{opacity:1!important;z-index:4;background:#000}
+.watch-content .portrait-video .embed-poster{display:none}
