@@ -118,5 +118,5 @@ if(mobileDock)mobileDock.addEventListener('click',event=>{
   if(button.dataset.dock==='browse')document.querySelector('.media-feed')?.scrollIntoView({behavior:'smooth',block:'start'});
   if(button.dataset.dock==='share')shareButton?.click();
 });
-requestAnimationFrame(updateActiveCard);
+// No automatic player on initial page load.
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
