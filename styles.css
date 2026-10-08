@@ -58,3 +58,29 @@ footer{width:min(100%,var(--max));margin:auto;padding:20px 0 92px;border-top:1px
 .media-card .card-expanded{position:fixed;inset:auto;left:50%;top:50%;transform:translate(-50%,-50%) scale(.97);width:min(calc(100vw - 28px),var(--max));height:min(calc(100dvh - 128px),var(--square-size));max-height:calc(100dvh - 128px);border:1px solid rgba(255,255,255,.18);border-radius:18px;overflow:hidden;z-index:70;box-shadow:0 24px 90px rgba(0,0,0,.7);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .24s ease,transform .28s cubic-bezier(.2,.75,.2,1),visibility 0s linear .28s}
 .media-card.active:not(.static-card) .card-expanded{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%) scale(1);transition:opacity .24s ease,transform .28s cubic-bezier(.2,.75,.2,1)}
 .close-preview{position:absolute;right:12px;top:12px;z-index:9;border:1px solid rgba(255,255,255,.3);background:rgba(10,12,15,.78);color:#fff;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;font-size:1.3rem;cursor:pointer}
+
+/* r17: one dedicated player layer; the feed never changes size. */
+.media-card,.media-card.active:not(.static-card){height:90px!important;overflow:hidden!important;contain:none!important;transition:border-color .2s ease,background .2s ease!important}
+.media-card.active:not(.static-card){border-color:rgba(220,91,100,.75);background:#21181c}
+.media-card .card-expanded{display:none!important}
+.card-compact,.media-card.active:not(.static-card) .card-compact{opacity:1!important;pointer-events:auto!important}
+.watch-stage{position:fixed;inset:0;z-index:65;display:grid;place-items:center;pointer-events:none;visibility:hidden;opacity:0;transition:opacity .22s ease,visibility 0s linear .22s}
+.watch-stage.open{visibility:visible;opacity:1;transition:opacity .22s ease}
+.watch-backdrop{position:absolute;inset:0;background:rgba(4,5,8,.55);pointer-events:none}
+.watch-panel{position:relative;width:min(calc(100vw - 28px),560px);max-height:calc(100dvh - 110px - env(safe-area-inset-bottom));display:flex;flex-direction:column;overflow:hidden;background:#101217;border:1px solid rgba(255,255,255,.2);border-radius:18px;box-shadow:0 20px 80px rgba(0,0,0,.65);transform:scale(.975);transition:transform .22s ease;pointer-events:auto}
+.watch-stage.open .watch-panel{transform:scale(1)}
+.watch-top,.watch-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 13px;flex:0 0 auto}
+.watch-heading{font-weight:750;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.watch-close{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:#24262b;color:#fff;font-size:1.3rem;cursor:pointer}
+.watch-content{min-height:0;display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain}
+.watch-content .card-expanded{display:flex!important;position:relative!important;inset:auto!important;top:auto!important;left:auto!important;width:100%!important;height:auto!important;max-height:none!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;transition:none!important;box-shadow:none!important;border:0!important;border-radius:0!important;flex-direction:column;overflow:visible!important}
+.watch-content .close-preview{display:none}
+.watch-content .preview-frame{position:relative!important;inset:auto!important;width:100%;height:auto;aspect-ratio:16/9;flex:0 0 auto;overflow:hidden}
+.watch-content .preview-frame.portrait-video{aspect-ratio:9/16;max-height:calc(100dvh - 260px);width:min(100%,calc((100dvh - 260px)*9/16));align-self:center}
+.watch-content .expanded-copy{position:relative!important;inset:auto!important;padding:12px!important;background:#101217!important}
+.watch-content .expanded-copy>div{margin-bottom:8px}
+.watch-content .media-embed{position:absolute;inset:0;width:100%;height:100%}
+.watch-content .tiktok-media{position:absolute;inset:0}
+.watch-bottom{color:#9ca3ad;font-size:.7rem}
+@media (min-width:720px){.watch-panel{max-height:calc(100dvh - 36px)}}
+@media (prefers-reduced-motion:reduce){.watch-stage,.watch-panel{transition:none!important}}
