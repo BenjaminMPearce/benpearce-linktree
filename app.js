@@ -1,25 +1,15 @@
 const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
 const allCards=[...document.querySelectorAll('.media-card')];
-const filters=[...document.querySelectorAll('.filter')];
 const shareButton=document.getElementById('shareProfile');
 const shareStatus=document.getElementById('shareStatus');
-const resultCount=document.getElementById('resultCount');
-const emptyState=document.getElementById('emptyState');
 const mobileDock=document.querySelector('.mobile-dock');
-const feedHint=document.getElementById('feedHint');
 
 let activeCard=null;
 let ticking=false;
-let feedHintDismissed=false;
 let manualLockUntil=0;
 
 function setCardSizes(){
   allCards.forEach(card=>card.style.setProperty('--square-size',Math.round(card.getBoundingClientRect().width)+'px'));
-}
-function updateResultCount(){
-  const visible=allCards.filter(card=>!card.hidden).length;
-  if(resultCount)resultCount.textContent=visible+` link${visible===1?'':'s'}`;
-  if(emptyState)emptyState.hidden=visible!==0;
 }
 function loadMedia(card){
   const iframe=card?.querySelector('iframe[data-src]');
@@ -68,7 +58,6 @@ function updateActiveCard(){
   setActive(candidate);
 }
 function schedule(){
-  if(!feedHintDismissed&&window.scrollY>120){feedHintDismissed=true;feedHint?.classList.add('hidden')}
   if(ticking)return;
   ticking=true;
   requestAnimationFrame(updateActiveCard);
@@ -85,23 +74,9 @@ cards.forEach(card=>{
     if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}
   });
 });
-setCardSizes();syncExpandedState();updateResultCount();
+setCardSizes();syncExpandedState();
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',()=>{setCardSizes();schedule()},{passive:true});
-filters.forEach(button=>button.addEventListener('click',()=>{
-  const filter=button.dataset.filter;
-  filters.forEach(item=>item.classList.toggle('active',item===button));
-  allCards.forEach(card=>{
-    const categories=(card.dataset.categories||'').split(' ');
-    const universal=card.classList.contains('static-card');
-    card.hidden=filter!=='all'&&!universal&&!categories.includes(filter);
-    if(card.hidden)card.classList.remove('active');
-  });
-  if(activeCard?.hidden)activeCard=null;
-  updateResultCount();
-  manualLockUntil=performance.now()+250;
-  requestAnimationFrame(()=>{setCardSizes();updateActiveCard()});
-}));
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
   try{
@@ -113,7 +88,7 @@ if(shareButton)shareButton.addEventListener('click',async()=>{
 if(mobileDock)mobileDock.addEventListener('click',event=>{
   const button=event.target.closest('button[data-dock]');if(!button)return;
   if(button.dataset.dock==='top')window.scrollTo({top:0,behavior:'smooth'});
-  if(button.dataset.dock==='browse')document.querySelector('.filter-label-row')?.scrollIntoView({behavior:'smooth',block:'start'});
+  if(button.dataset.dock==='browse')document.querySelector('.media-feed')?.scrollIntoView({behavior:'smooth',block:'start'});
   if(button.dataset.dock==='share')shareButton?.click();
 });
 requestAnimationFrame(updateActiveCard);
