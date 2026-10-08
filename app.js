@@ -28,10 +28,13 @@ function prepare(card){
   positions.set(card,(index+1)%playlist.length);
   count.textContent=(index+1)+' / '+playlist.length;
   if(card.dataset.source==='tiktok'){
-    const url='https://www.tiktok.com/t/'+encodeURIComponent(playlist[index])+'/';
-    panels.get(card).querySelectorAll('.tiktok-media,.tiktok-watch').forEach(a=>a.href=url);
+    const id=playlist[index];
+    const url='https://www.tiktok.com/@bennyp1010/video/'+id;
+    panels.get(card).querySelectorAll('.tiktok-watch').forEach(a=>a.href=url);
+    const embed=panels.get(card).querySelector('iframe.tiktok-embed');
+    if(embed)embed.src='https://www.tiktok.com/player/v1/'+id+'?controls=1&description=0&music_info=0';
     const episode=panels.get(card).querySelector('.tiktok-episode');
-    if(episode)episode.textContent='Episode '+(index+1)+' of '+playlist.length+' · Tap to watch ↗';
+    if(episode)episode.textContent='Episode '+(index+1)+' of '+playlist.length+' · Watch here or on TikTok ↗';
     return;
   }
   const iframe=panels.get(card).querySelector('iframe.media-embed');
