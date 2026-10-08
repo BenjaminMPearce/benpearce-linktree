@@ -1,96 +1,92 @@
 const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
-const allCards=[...document.querySelectorAll('.media-card')];
 const shareButton=document.getElementById('shareProfile');
 const shareStatus=document.getElementById('shareStatus');
 const mobileDock=document.querySelector('.mobile-dock');
-
-let activeCard=null;
+const stage=document.getElementById('watchStage');
+const content=document.getElementById('watchContent');
+const heading=document.getElementById('watchHeading');
+const count=document.getElementById('watchCount');
+const positions=new WeakMap();
+const panels=new Map(cards.map(card=>[card,card.querySelector('.card-expanded')]));
+let active=null;
 let ticking=false;
-let manualLockUntil=0;
-let lastScrollY=window.scrollY;
-const COMPACT_HEIGHT=90;
-const CARD_GAP=10;
-const playlistPositions=new WeakMap();
-
-function setCardSizes(){
-  const available=Math.max(180,window.innerHeight-128);
-  allCards.forEach(card=>card.style.setProperty('--square-size',Math.min(Math.round(card.getBoundingClientRect().width),available)+'px'));
-}
-function loadMedia(card){
-  if(card?.dataset.source==='tiktok'){
-    const playlist=(card.dataset.playlist||'').split(',').filter(Boolean);
-    if(!playlist.length)return;
-    const index=playlistPositions.get(card)||0;
-    const url='https://www.tiktok.com/t/'+encodeURIComponent(playlist[index])+'/';
-    card.querySelectorAll('.tiktok-media,.tiktok-watch').forEach(link=>link.href=url);
-    const episode=card.querySelector('.tiktok-episode');
-    if(episode)episode.textContent='Episode '+(index+1)+' of '+playlist.length+' · Tap to watch ↗';
-    playlistPositions.set(card,(index+1)%playlist.length);
-    return;
-  }
-  const iframe=card?.querySelector('iframe[data-src]');
-  if(!iframe||iframe.src)return;
-  const playlist=(card.dataset.playlist||'').split(',').filter(Boolean);
-  if(playlist.length){
-    const index=playlistPositions.get(card)||0;
-    iframe.dataset.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(playlist[index])+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
-    playlistPositions.set(card,(index+1)%playlist.length);
-  }
-  if(!iframe.dataset.src)return;
-  card.classList.add('loading');
-  iframe.src=iframe.dataset.src;
-  const done=()=>{card.classList.remove('loading');card.classList.add('media-loaded')};
-  iframe.addEventListener('load',done,{once:true});
-  setTimeout(()=>card.classList.remove('loading'),5000);
-}
-function stopMedia(card){
-  const iframe=card?.querySelector('iframe.media-embed');
-  if(!iframe||!iframe.src)return;
-  iframe.removeAttribute('src');
+let pausedUntil=0;
+const midpoint=()=>window.innerHeight*.5;
+function unload(card){
+  if(!card)return;
+  const iframe=panels.get(card)?.querySelector('iframe.media-embed');
+  if(iframe)iframe.removeAttribute('src');
   card.classList.remove('loading','media-loaded');
 }
-function syncExpandedState(){
-  cards.forEach(card=>{
-    const compact=card.querySelector('.card-compact[role="button"]');
-    if(compact)compact.setAttribute('aria-expanded',String(card===activeCard));
-  });
+function prepare(card){
+  const playlist=(card.dataset.playlist||'').split(',').filter(Boolean);
+  if(!playlist.length)return;
+  const index=positions.get(card)||0;
+  positions.set(card,(index+1)%playlist.length);
+  count.textContent=(index+1)+' / '+playlist.length;
+  if(card.dataset.source==='tiktok'){
+    const url='https://www.tiktok.com/t/'+encodeURIComponent(playlist[index])+'/';
+    panels.get(card).querySelectorAll('.tiktok-media,.tiktok-watch').forEach(a=>a.href=url);
+    const episode=panels.get(card).querySelector('.tiktok-episode');
+    if(episode)episode.textContent='Episode '+(index+1)+' of '+playlist.length+' · Tap to watch ↗';
+    return;
+  }
+  const iframe=panels.get(card).querySelector('iframe.media-embed');
+  if(!iframe)return;
+  card.classList.add('loading');
+  iframe.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(playlist[index])+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
+  iframe.onload=()=>{card.classList.remove('loading');card.classList.add('media-loaded')};
 }
-function setActive(card){
-  if(activeCard===card)return;
-  const previous=activeCard;
-  if(previous){previous.classList.remove('active');stopMedia(previous)}
-  activeCard=card||null;
-  if(activeCard){activeCard.classList.add('active');loadMedia(activeCard);manualLockUntil=performance.now()+180}
-  syncExpandedState();
+function select(card){
+  if(active===card)return;
+  if(active){
+    unload(active);
+    active.classList.remove('active');
+    const old=panels.get(active);
+    if(old)active.appendChild(old);
+  }
+  active=card;
+  if(!card){
+    stage.classList.remove('open');
+    stage.setAttribute('aria-hidden','true');
+    count.textContent='';
+  }else{
+    const panel=panels.get(card);
+    content.replaceChildren(panel);
+    heading.textContent=card.querySelector('h3')?.textContent||'Now playing';
+    card.classList.add('active');
+    stage.classList.add('open');
+    stage.setAttribute('aria-hidden','false');
+    prepare(card);
+  }
+  cards.forEach(item=>item.querySelector('.card-compact')?.setAttribute('aria-expanded',String(item===active)));
 }
-function updateActiveCard(){
+function update(){
   ticking=false;
-  if(performance.now()<manualLockUntil)return;
-  const center=window.innerHeight/2;
-  const candidate=[...cards].reverse().find(card=>card.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center)||null;
-  setActive(candidate);
+  if(performance.now()<pausedUntil)return;
+  const feed=document.getElementById('mediaFeed');
+  const rect=feed.getBoundingClientRect();
+  const line=midpoint();
+  if(rect.top>line||rect.bottom<line){select(null);return}
+  const chosen=[...cards].reverse().find(card=>card.getBoundingClientRect().top+45<=line)||null;
+  select(chosen);
 }
 function schedule(){
   if(ticking)return;
   ticking=true;
-  requestAnimationFrame(updateActiveCard);
+  requestAnimationFrame(update);
 }
 cards.forEach(card=>{
-  const compact=card.querySelector('.card-compact[role="button"]');
-  if(!compact)return;
-  const toggle=()=>{
-    manualLockUntil=performance.now()+650;
-    setActive(activeCard===card?null:card);
-  };
-  compact.addEventListener('click',toggle);
-  compact.addEventListener('keydown',event=>{
-    if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}
-  });
+  const button=card.querySelector('.card-compact[role="button"]');
+  const toggle=()=>{pausedUntil=performance.now()+700;select(active===card?null:card)};
+  button?.addEventListener('click',toggle);
+  button?.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}});
 });
-setCardSizes();syncExpandedState();
-document.querySelectorAll('.close-preview').forEach(button=>button.addEventListener('click',()=>{manualLockUntil=performance.now()+650;setActive(null)}));
+stage.querySelector('.watch-close').addEventListener('click',()=>{pausedUntil=performance.now()+850;select(null)});
+addEventListener('keydown',event=>{if(event.key==='Escape'&&active){pausedUntil=performance.now()+850;select(null)}});
 addEventListener('scroll',schedule,{passive:true});
-addEventListener('resize',()=>{setCardSizes();schedule()},{passive:true});
+addEventListener('resize',schedule,{passive:true});
+requestAnimationFrame(update);
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
   try{
