@@ -17,6 +17,17 @@ function setCardSizes(){
   allCards.forEach(card=>card.style.setProperty('--square-size',Math.min(Math.round(card.getBoundingClientRect().width),available)+'px'));
 }
 function loadMedia(card){
+  if(card?.dataset.source==='tiktok'){
+    const playlist=(card.dataset.playlist||'').split(',').filter(Boolean);
+    if(!playlist.length)return;
+    const index=playlistPositions.get(card)||0;
+    const url='https://www.tiktok.com/t/'+encodeURIComponent(playlist[index])+'/';
+    card.querySelectorAll('.tiktok-media,.tiktok-watch').forEach(link=>link.href=url);
+    const episode=card.querySelector('.tiktok-episode');
+    if(episode)episode.textContent='Episode '+(index+1)+' of '+playlist.length+' · Tap to watch ↗';
+    playlistPositions.set(card,(index+1)%playlist.length);
+    return;
+  }
   const iframe=card?.querySelector('iframe[data-src]');
   if(!iframe||iframe.src)return;
   const playlist=(card.dataset.playlist||'').split(',').filter(Boolean);
