@@ -7,6 +7,9 @@ const mobileDock=document.querySelector('.mobile-dock');
 let activeCard=null;
 let ticking=false;
 let manualLockUntil=0;
+let settledScrollY=0;
+let lastUserScrollY=0;
+let repositioning=false;
 const COMPACT_HEIGHT=90;
 const CARD_GAP=10;
 let baseline=[];
@@ -14,7 +17,8 @@ let feedOrigin=0;
 const playlistPositions=new WeakMap();
 
 function setCardSizes(){
-  allCards.forEach(card=>card.style.setProperty('--square-size',Math.round(card.getBoundingClientRect().width)+'px'));
+  const available=Math.max(220,window.innerHeight-128);
+  allCards.forEach(card=>card.style.setProperty('--square-size',Math.min(Math.round(card.getBoundingClientRect().width),available)+'px'));
 }
 function loadMedia(card){
   const iframe=card?.querySelector('iframe[data-src]');
@@ -44,12 +48,26 @@ function syncExpandedState(){
     if(compact)compact.setAttribute('aria-expanded',String(card===activeCard));
   });
 }
+function centerExpanded(card){
+  if(!card)return;
+  requestAnimationFrame(()=>{
+    const rect=card.getBoundingClientRect();
+    const size=parseFloat(getComputedStyle(card).getPropertyValue('--square-size'))||rect.width;
+    const desired=Math.max(12,(window.innerHeight-size)/2-12);
+    const target=Math.max(0,window.scrollY+rect.top-desired);
+    repositioning=true;
+    window.scrollTo({top:target,behavior:'instant'});
+    settledScrollY=target;
+    lastUserScrollY=target;
+    requestAnimationFrame(()=>{repositioning=false});
+  });
+}
 function setActive(card){
   if(activeCard===card)return;
   const previous=activeCard;
   if(previous){previous.classList.remove('active');stopMedia(previous)}
   activeCard=card||null;
-  if(activeCard){activeCard.classList.add('active');loadMedia(activeCard)}
+  if(activeCard){activeCard.classList.add('active');loadMedia(activeCard);centerExpanded(activeCard);manualLockUntil=performance.now()+500}
   syncExpandedState();
 }
 function measureFeed(){
@@ -65,18 +83,26 @@ function measureFeed(){
 }
 function updateActiveCard(){
   ticking=false;
-  if(performance.now()<manualLockUntil)return;
-  if(!baseline.length)measureFeed();
-  const center=window.scrollY+window.innerHeight/2;
-  let candidate=null;
-  cards.forEach(card=>{
-    const index=allCards.indexOf(card);
-    // Hard crossing line: compact card center meets viewport center.
-    if(feedOrigin+baseline[index]+COMPACT_HEIGHT/2<=center)candidate=card;
-  });
-  setActive(candidate);
+  if(repositioning||performance.now()<manualLockUntil)return;
+  const center=window.innerHeight/2;
+  if(!activeCard){
+    const candidate=cards.find(card=>card.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center);
+    if(candidate)setActive(candidate);
+    return;
+  }
+  const index=cards.indexOf(activeCard);
+  const next=cards[index+1];
+  const previous=cards[index-1];
+  // Advance only when the next compact card reaches the fixed center line.
+  if(next&&next.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center){setActive(next);return}
+  // Reverse only after the current card's top has crossed below the same line.
+  if(activeCard.getBoundingClientRect().top>center){
+    setActive(previous||null);
+  }
 }
 function schedule(){
+  if(repositioning)return;
+  lastUserScrollY=window.scrollY;
   if(ticking)return;
   ticking=true;
   requestAnimationFrame(updateActiveCard);
