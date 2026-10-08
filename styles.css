@@ -84,3 +84,7 @@ footer{width:min(100%,var(--max));margin:auto;padding:20px 0 92px;border-top:1px
 .watch-bottom{color:#9ca3ad;font-size:.7rem}
 @media (min-width:720px){.watch-panel{max-height:calc(100dvh - 36px)}}
 @media (prefers-reduced-motion:reduce){.watch-stage,.watch-panel{transition:none!important}}
+
+/* Player iframe is moved outside its source card; reveal it on load. */
+.watch-content .media-embed{opacity:1!important}
+.watch-content .player-status{display:none!important}
