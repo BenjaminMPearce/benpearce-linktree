@@ -32,7 +32,7 @@ function prepare(card){
     const url='https://www.tiktok.com/@bennyp1010/video/'+id;
     panels.get(card).querySelectorAll('.tiktok-watch').forEach(a=>a.href=url);
     const embed=panels.get(card).querySelector('iframe.tiktok-embed');
-    if(embed)embed.src='https://www.tiktok.com/player/v1/'+id+'?controls=1&description=0&music_info=0';
+    if(embed)embed.src='https://www.tiktok.com/player/v1/'+id+'?autoplay=1&muted=1&controls=1&description=0&music_info=0';
     const episode=panels.get(card).querySelector('.tiktok-episode');
     if(episode)episode.textContent='Episode '+(index+1)+' of '+playlist.length+' · Watch here or on TikTok ↗';
     return;
