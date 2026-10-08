@@ -7,13 +7,9 @@ const mobileDock=document.querySelector('.mobile-dock');
 let activeCard=null;
 let ticking=false;
 let manualLockUntil=0;
-let settledScrollY=0;
-let lastUserScrollY=0;
 let repositioning=false;
 const COMPACT_HEIGHT=90;
 const CARD_GAP=10;
-let baseline=[];
-let feedOrigin=0;
 const playlistPositions=new WeakMap();
 
 function setCardSizes(){
@@ -57,8 +53,6 @@ function centerExpanded(card){
     const target=Math.max(0,window.scrollY+rect.top-desired);
     repositioning=true;
     window.scrollTo({top:target,behavior:'instant'});
-    settledScrollY=target;
-    lastUserScrollY=target;
     requestAnimationFrame(()=>{repositioning=false});
   });
 }
@@ -70,23 +64,12 @@ function setActive(card){
   if(activeCard){activeCard.classList.add('active');loadMedia(activeCard);centerExpanded(activeCard);manualLockUntil=performance.now()+500}
   syncExpandedState();
 }
-function measureFeed(){
-  // The compact layout is our source of truth; expansion never changes thresholds.
-  const feed=document.getElementById('mediaFeed');
-  if(!feed)return;
-  const first=allCards[0];
-  if(!first)return;
-  feedOrigin=feed.getBoundingClientRect().top+window.scrollY;
-  const activeExtra=activeCard?Math.max(0,activeCard.getBoundingClientRect().height-COMPACT_HEIGHT):0;
-  if(activeCard && allCards.indexOf(activeCard)<allCards.indexOf(first))feedOrigin-=activeExtra;
-  baseline=allCards.map((card,index)=>index*(COMPACT_HEIGHT+CARD_GAP));
-}
 function updateActiveCard(){
   ticking=false;
   if(repositioning||performance.now()<manualLockUntil)return;
   const center=window.innerHeight/2;
   if(!activeCard){
-    const candidate=cards.find(card=>card.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center);
+    const candidate=[...cards].reverse().find(card=>card.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center);
     if(candidate)setActive(candidate);
     return;
   }
@@ -102,7 +85,6 @@ function updateActiveCard(){
 }
 function schedule(){
   if(repositioning)return;
-  lastUserScrollY=window.scrollY;
   if(ticking)return;
   ticking=true;
   requestAnimationFrame(updateActiveCard);
@@ -119,9 +101,9 @@ cards.forEach(card=>{
     if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}
   });
 });
-setCardSizes();syncExpandedState();measureFeed();
+setCardSizes();syncExpandedState();
 addEventListener('scroll',schedule,{passive:true});
-addEventListener('resize',()=>{setCardSizes();measureFeed();schedule()},{passive:true});
+addEventListener('resize',()=>{setCardSizes();schedule()},{passive:true});
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
   try{
