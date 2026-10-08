@@ -92,3 +92,5 @@ footer{width:min(100%,var(--max));margin:auto;padding:20px 0 92px;border-top:1px
 /* Native portrait TikTok iframe; fallback link remains below. */
 .watch-content .tiktok-embed{opacity:1!important;z-index:4;background:#000}
 .watch-content .portrait-video .embed-poster{display:none}
+
+.portrait{overflow:hidden}.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
