@@ -7,13 +7,13 @@ const mobileDock=document.querySelector('.mobile-dock');
 let activeCard=null;
 let ticking=false;
 let manualLockUntil=0;
-let repositioning=false;
+let lastScrollY=window.scrollY;
 const COMPACT_HEIGHT=90;
 const CARD_GAP=10;
 const playlistPositions=new WeakMap();
 
 function setCardSizes(){
-  const available=Math.max(220,window.innerHeight-128);
+  const available=Math.max(180,window.innerHeight-128);
   allCards.forEach(card=>card.style.setProperty('--square-size',Math.min(Math.round(card.getBoundingClientRect().width),available)+'px'));
 }
 function loadMedia(card){
@@ -44,47 +44,22 @@ function syncExpandedState(){
     if(compact)compact.setAttribute('aria-expanded',String(card===activeCard));
   });
 }
-function centerExpanded(card){
-  if(!card)return;
-  requestAnimationFrame(()=>{
-    const rect=card.getBoundingClientRect();
-    const size=parseFloat(getComputedStyle(card).getPropertyValue('--square-size'))||rect.width;
-    const desired=Math.max(12,(window.innerHeight-size)/2-12);
-    const target=Math.max(0,window.scrollY+rect.top-desired);
-    repositioning=true;
-    window.scrollTo({top:target,behavior:'instant'});
-    requestAnimationFrame(()=>{repositioning=false});
-  });
-}
 function setActive(card){
   if(activeCard===card)return;
   const previous=activeCard;
   if(previous){previous.classList.remove('active');stopMedia(previous)}
   activeCard=card||null;
-  if(activeCard){activeCard.classList.add('active');loadMedia(activeCard);centerExpanded(activeCard);manualLockUntil=performance.now()+500}
+  if(activeCard){activeCard.classList.add('active');loadMedia(activeCard);manualLockUntil=performance.now()+180}
   syncExpandedState();
 }
 function updateActiveCard(){
   ticking=false;
-  if(repositioning||performance.now()<manualLockUntil)return;
+  if(performance.now()<manualLockUntil)return;
   const center=window.innerHeight/2;
-  if(!activeCard){
-    const candidate=[...cards].reverse().find(card=>card.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center);
-    if(candidate)setActive(candidate);
-    return;
-  }
-  const index=cards.indexOf(activeCard);
-  const next=cards[index+1];
-  const previous=cards[index-1];
-  // Advance only when the next compact card reaches the fixed center line.
-  if(next&&next.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center){setActive(next);return}
-  // Reverse only after the current card's top has crossed below the same line.
-  if(activeCard.getBoundingClientRect().top>center){
-    setActive(previous||null);
-  }
+  const candidate=[...cards].reverse().find(card=>card.getBoundingClientRect().top+COMPACT_HEIGHT/2<=center)||null;
+  setActive(candidate);
 }
 function schedule(){
-  if(repositioning)return;
   if(ticking)return;
   ticking=true;
   requestAnimationFrame(updateActiveCard);
@@ -102,6 +77,7 @@ cards.forEach(card=>{
   });
 });
 setCardSizes();syncExpandedState();
+document.querySelectorAll('.close-preview').forEach(button=>button.addEventListener('click',()=>{manualLockUntil=performance.now()+650;setActive(null)}));
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',()=>{setCardSizes();schedule()},{passive:true});
 if(shareButton)shareButton.addEventListener('click',async()=>{
