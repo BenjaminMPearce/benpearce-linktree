@@ -11,6 +11,9 @@ const panels=new Map(cards.map(card=>[card,card.querySelector('.card-expanded')]
 let active=null;
 let ticking=false;
 let pausedUntil=0;
+let settleTimer=null;
+let lastScrollPosition=window.scrollY;
+let suppressAutoUntilScroll=false;
 const midpoint=()=>window.innerHeight*.5;
 function unload(card){
   if(!card)return;
@@ -61,32 +64,46 @@ function select(card){
   }
   cards.forEach(item=>item.querySelector('.card-compact')?.setAttribute('aria-expanded',String(item===active)));
 }
+function candidateAtRest(){
+  const feed=document.getElementById('mediaFeed');
+  const bounds=feed.getBoundingClientRect();
+  const line=midpoint();
+  if(bounds.top>line||bounds.bottom<line)return null;
+  // Only select a card genuinely inside the center band, not one long past it.
+  return cards.find(card=>{
+    const rect=card.getBoundingClientRect();
+    const center=rect.top+rect.height/2;
+    return Math.abs(center-line)<Math.min(105,window.innerHeight*.16);
+  })||null;
+}
 function update(){
   ticking=false;
-  if(performance.now()<pausedUntil)return;
-  const feed=document.getElementById('mediaFeed');
-  const rect=feed.getBoundingClientRect();
-  const line=midpoint();
-  if(rect.top>line||rect.bottom<line){select(null);return}
-  const chosen=[...cards].reverse().find(card=>card.getBoundingClientRect().top+45<=line)||null;
-  select(chosen);
+  if(performance.now()<pausedUntil||suppressAutoUntilScroll)return;
+  const chosen=candidateAtRest();
+  // Passing between cards does not dismiss the current video.
+  if(chosen&&chosen!==active)select(chosen);
+  else if(!chosen){
+    const feed=document.getElementById('mediaFeed').getBoundingClientRect();
+    if(feed.bottom<midpoint()-120||feed.top>midpoint()+120)select(null);
+  }
 }
 function schedule(){
-  if(ticking)return;
-  ticking=true;
-  requestAnimationFrame(update);
+  if(Math.abs(window.scrollY-lastScrollPosition)>2)suppressAutoUntilScroll=false;
+  lastScrollPosition=window.scrollY;
+  clearTimeout(settleTimer);
+  settleTimer=setTimeout(()=>requestAnimationFrame(update),380);
 }
 cards.forEach(card=>{
   const button=card.querySelector('.card-compact[role="button"]');
-  const toggle=()=>{pausedUntil=performance.now()+700;select(active===card?null:card)};
+  const toggle=()=>{clearTimeout(settleTimer);pausedUntil=performance.now()+850;suppressAutoUntilScroll=true;select(active===card?null:card)};
   button?.addEventListener('click',toggle);
   button?.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}});
 });
-stage.querySelector('.watch-close').addEventListener('click',()=>{pausedUntil=performance.now()+850;select(null)});
+stage.querySelector('.watch-close').addEventListener('click',()=>{pausedUntil=performance.now()+850;suppressAutoUntilScroll=true;clearTimeout(settleTimer);select(null)});
 addEventListener('keydown',event=>{if(event.key==='Escape'&&active){pausedUntil=performance.now()+850;select(null)}});
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',schedule,{passive:true});
-requestAnimationFrame(update);
+/* Start closed; scrolling or tapping a card opens the first preview. */
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
   try{
