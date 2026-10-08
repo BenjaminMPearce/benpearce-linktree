@@ -7,6 +7,7 @@ const mobileDock=document.querySelector('.mobile-dock');
 let activeCard=null;
 let ticking=false;
 let manualLockUntil=0;
+const playlistPositions=new WeakMap();
 
 function setCardSizes(){
   allCards.forEach(card=>card.style.setProperty('--square-size',Math.round(card.getBoundingClientRect().width)+'px'));
@@ -14,6 +15,13 @@ function setCardSizes(){
 function loadMedia(card){
   const iframe=card?.querySelector('iframe[data-src]');
   if(!iframe||iframe.src)return;
+  const playlist=(card.dataset.playlist||'').split(',').filter(Boolean);
+  if(playlist.length){
+    const index=playlistPositions.get(card)||0;
+    iframe.dataset.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(playlist[index])+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
+    playlistPositions.set(card,(index+1)%playlist.length);
+  }
+  if(!iframe.dataset.src)return;
   card.classList.add('loading');
   iframe.src=iframe.dataset.src;
   const done=()=>{card.classList.remove('loading');card.classList.add('media-loaded')};
@@ -23,10 +31,8 @@ function loadMedia(card){
 function stopMedia(card){
   const iframe=card?.querySelector('iframe.media-embed');
   if(!iframe||!iframe.src)return;
-  const src=iframe.dataset.src;
   iframe.removeAttribute('src');
   card.classList.remove('loading','media-loaded');
-  requestAnimationFrame(()=>iframe.dataset.src=src);
 }
 function syncExpandedState(){
   cards.forEach(card=>{
