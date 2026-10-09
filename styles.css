@@ -136,3 +136,9 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 .brand-footer-link{background:transparent!important;border:0!important;min-height:58px;padding:12px 16px calc(16px + env(safe-area-inset-bottom));font-size:clamp(1rem,4vw,1.35rem);color:#26824c!important}
 .brand-footer-link strong{color:#26824c!important;text-shadow:-1px -1px 0 #d8ae48,1px -1px 0 #d8ae48,-1px 1px 0 #d8ae48,1px 1px 0 #d8ae48,0 0 1px #d8ae48!important}
 .brand-footer-link:hover,.brand-footer-link:focus-visible{background:transparent!important;color:#35a363!important;text-decoration:underline;text-decoration-color:#d8ae48;text-underline-offset:5px}
+
+/* r28: keep unloaded embedded documents invisible, preserving dark posters. */
+.media-card:not(.playing) .media-embed{visibility:hidden!important;opacity:0!important;pointer-events:none!important}
+.media-card .preview-frame,.media-card .tiktok-media{background:#080a0d!important}
+.media-card .embed-poster{background-color:#101217!important}
+.media-card.playing .media-embed{background:#080a0d!important}
