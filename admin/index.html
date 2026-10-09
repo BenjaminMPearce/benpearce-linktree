@@ -193,6 +193,17 @@ body:has(#dashboard:not(.hide)) #dashboardSignout{display:inline-flex!important;
  #dashboard .tabs{top:0!important;background:transparent!important;box-shadow:none!important;padding:8px 0 10px!important}
  #dashboard .tab{box-shadow:none}
 }
+
+/* Compact dashboard ending: remove excess whitespace before sign-out */
+body:has(#dashboard:not(.hide)) main{padding-bottom:8px!important}
+body:has(#dashboard:not(.hide)) #dashboard .panel:last-of-type{margin-bottom:8px}
+body:has(#dashboard:not(.hide)) footer{padding:14px 16px calc(18px + env(safe-area-inset-bottom));line-height:1.35}
+body:has(#dashboard:not(.hide)) #dashboardSignout{margin:0 auto 10px;min-height:44px;padding:10px 22px}
+@media(max-width:700px){
+ body:has(#dashboard:not(.hide)) main{padding-bottom:0!important}
+ body:has(#dashboard:not(.hide)) footer{padding-top:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom));font-size:11px}
+ body:has(#dashboard:not(.hide)) #dashboardSignout{margin-bottom:9px}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
