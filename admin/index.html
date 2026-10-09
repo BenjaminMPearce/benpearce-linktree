@@ -71,6 +71,30 @@ body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide
 body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:160px}
 body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:188px}
 }
+
+/* Login theater fits in a single viewport; dashboard keeps normal scrolling */
+body:has(#auth:not(.hide)),body:has(#resetPanel:not(.hide)){height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column}
+body:has(#auth:not(.hide)) header,body:has(#resetPanel:not(.hide)) header{height:0;min-height:0;flex:none}
+body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{height:100vh;height:100dvh;min-height:0;flex:1;display:flex;align-items:center;justify-content:center;padding:130px 18px 34px;overflow:hidden}
+body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:135px}
+body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:20px}
+body:has(#auth:not(.hide)) .auth,body:has(#resetPanel:not(.hide)) .auth{margin:0;align-self:auto;max-height:calc(100dvh - 165px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+body:has(#auth:not(.hide)) footer,body:has(#resetPanel:not(.hide)) footer{display:none}
+@media(max-width:600px){
+body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding:118px 14px 14px}
+body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:123px}
+body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:14px}
+body:has(#auth:not(.hide)) header>.actions,body:has(#resetPanel:not(.hide)) header>.actions{top:87px}
+body:has(#auth:not(.hide)) .auth,body:has(#resetPanel:not(.hide)) .auth{max-height:calc(100dvh - 134px)}
+}
+@media(max-height:660px){
+body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:103px;padding-bottom:9px}
+body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:107px}
+body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:9px}
+body:has(#auth:not(.hide)) .auth,body:has(#resetPanel:not(.hide)) .auth{max-height:calc(100dvh - 112px);padding:17px}
+body:has(#auth:not(.hide)) .auth h1,body:has(#resetPanel:not(.hide)) .auth h1{font-size:30px;margin:5px 0}
+body:has(#auth:not(.hide)) .auth .field,body:has(#resetPanel:not(.hide)) .auth .field{margin:7px 0}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
