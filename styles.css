@@ -101,3 +101,25 @@ footer{width:min(100%,var(--max));margin:auto;padding:20px 0 92px;border-top:1px
 footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 .watch-panel{max-height:calc(100dvh - 36px - env(safe-area-inset-bottom))}
 .watch-content .preview-frame.portrait-video{max-height:calc(100dvh - 190px);width:min(100%,calc((100dvh - 190px)*9/16))}
+
+/* r23: inline streaming portfolio — no overlays or expanding cards. */
+.media-feed{gap:18px;padding-bottom:26px!important}
+.media-card,.media-card.active:not(.static-card){height:auto!important;overflow:visible!important;contain:none!important;border-radius:18px;transition:border-color .2s ease!important}
+.media-card .card-compact,.media-card.active:not(.static-card) .card-compact{position:relative!important;inset:auto!important;min-height:78px;opacity:1!important;pointer-events:auto!important;cursor:default}
+.media-card .card-expanded,.media-card.active:not(.static-card) .card-expanded{display:block!important;position:relative!important;inset:auto!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;height:auto!important;max-height:none!important;overflow:visible!important;transition:none!important}
+.media-card .preview-frame{position:relative!important;inset:auto!important;width:100%;height:auto;aspect-ratio:16/9;overflow:hidden;background:#080a0d}
+.media-card .preview-frame.portrait-video{aspect-ratio:9/16;width:min(100%,310px);max-height:min(70dvh,550px);margin:0 auto}
+.media-card .preview-frame .media-embed{position:absolute;inset:0;width:100%;height:100%;z-index:3}
+.media-card.playing .media-embed{opacity:1!important}
+.media-card .preview-frame.portrait-video .tiktok-media{position:absolute;inset:0;width:100%;height:100%}
+.media-card .expanded-copy{position:relative!important;inset:auto!important;padding:12px 14px!important;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.media-card .expanded-copy>div{width:100%;display:flex;flex-wrap:wrap;gap:5px}
+.media-card .player-status{display:none!important}
+.media-card .close-preview{display:none!important}
+.media-card .tiktok-embed{opacity:0;transition:opacity .2s}
+.media-card .next-video{margin-left:auto;border:1px solid rgba(255,255,255,.22);background:#20252d;color:#fff;border-radius:999px;padding:10px 14px;font-size:.77rem;font-weight:650;cursor:pointer}
+.media-card.playing{border-color:rgba(255,255,255,.28)}
+.media-card.static-card{height:90px!important;overflow:hidden!important}
+.media-card.static-card .card-compact{min-height:90px}
+.media-card:not(.static-card) .arrow{display:none}
+@media (max-width:400px){.media-card .preview-frame.portrait-video{max-height:65dvh;width:min(100%,calc(65dvh * 9/16))}}
