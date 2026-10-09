@@ -254,3 +254,6 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 /* r46: right-align circular portrait, retain its outline and keep copy readable. */
 .director-art{background-image:linear-gradient(90deg,rgba(5,9,12,.96) 0%,rgba(5,9,12,.87) 37%,rgba(5,9,12,.42) 66%,rgba(5,9,12,.08) 100%),url('./director-circle-new.webp')!important;background-size:100% 100%,auto 112%!important;background-position:center,92% center!important;background-repeat:no-repeat!important;background-color:#080d14!important}
 @media(max-width:650px){.director-art{background-size:100% 100%,auto 105%!important;background-position:center,83% center!important}}
+
+/* r47: use verified 4096px Director's Cut asset; retain offset framing. */
+.director-art{background-image:linear-gradient(90deg,rgba(5,9,12,.96) 0%,rgba(5,9,12,.87) 37%,rgba(5,9,12,.42) 66%,rgba(5,9,12,.08) 100%),url('./ben-pearce-directors-cut-4k.webp')!important}
