@@ -167,6 +167,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(max-width:700px) and (max-height:650px){
  #dashboard .tabs{top:68px}
 }
+
+/* Mobile refinements: place theater exit comfortably below the marquee, and blend sticky tabs into the dashboard */
+@media(max-width:600px){
+ body:has(#auth:not(.hide)) header>.actions,body:has(#resetPanel:not(.hide)) header>.actions{top:69px;right:12px}
+}
+@media(max-width:700px){
+ #dashboard .tabs{background:#0b0e14;box-shadow:none;border:0}
+ #dashboard .tabs::before{content:none}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
