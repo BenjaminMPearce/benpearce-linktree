@@ -3,6 +3,8 @@
 # BENJAMIN PEARCE
 ### THE DIRECTOR'S CUT
 
+<img src="./ben-pearce-directors-cut-4k.webp" alt="Benjamin Pearce — Director's Cut cinematic artwork" width="360" />
+
 **Films · Comedy · Stories worth watching**
 
 [**View the portfolio ↗**](https://benjaminmpearce.github.io/benpearce-linktree/) · [**Project documentation**](./docs/MAINTENANCE.md)
