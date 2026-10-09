@@ -51,6 +51,7 @@ function applyContent(data){
  const get=k=>data.find(x=>x.key===k)?.content||{};
  const p=get('profile'),h=get('hero'),s=get('site_settings');
  text('.hero-copy .eyebrow',p.eyebrow);text('.hero-copy h1',p.name);text('.hero-copy .lede',p.lede);
+ if(typeof h.kicker==='string'){const el=document.querySelector('.director-kicker');if(el){const dot=el.querySelector('.on-air-dot');const edition=el.querySelector('.edition');el.replaceChildren();if(dot)el.append(dot);el.append(document.createTextNode(' '+h.kicker+' '));if(edition)el.append(edition)}}
  text('.director-overline',h.overline);text('#directorTitle',h.title);text('.director-content > p:not(.director-kicker):not(.director-overline)',h.description);
  text('.director-action',h.action);text('.showcase-eyebrow',s.eyebrow);
  if(typeof s.heading==='string'){const el=document.querySelector('.showcase-heading h2');if(el){el.textContent=s.heading;const dot=document.createElement('span');dot.className='showcase-period';dot.textContent='.';el.append(dot)}}
