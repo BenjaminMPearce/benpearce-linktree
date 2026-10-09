@@ -154,3 +154,6 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 
 /* r32: fine gold hairline, not a heavy outline. */
 .brand-footer-link strong{-webkit-text-stroke:.55px #dfbc66!important}
+
+/* r33: bold forest-green wordmark, fine champagne-gold edge, discreet lift. */
+.brand-footer-link strong{font-family:Arial,Helvetica,sans-serif!important;font-weight:900!important;letter-spacing:.015em!important;background:linear-gradient(180deg,#276b46 0%,#174d32 42%,#0c3020 100%)!important;background-clip:text!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke:.45px #e7c77a!important;text-shadow:none!important;filter:drop-shadow(0 2px 2px rgba(0,0,0,.8)) drop-shadow(0 0 3px rgba(231,199,122,.20))!important}
