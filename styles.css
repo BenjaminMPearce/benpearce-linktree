@@ -273,3 +273,6 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 
 /* r51: remove intrusive gold Play Video overlay on scroll previews. */
 .media-card .preview-play{display:none!important}
+
+/* Published CMS artwork override */
+.director-art.cms-director-art::before{background-image:var(--cms-director-image)!important}
