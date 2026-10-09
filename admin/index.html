@@ -176,19 +176,36 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
  #dashboard .tabs{background:#0b0e14;box-shadow:none;border:0}
  #dashboard .tabs::before{content:none}
 }
+
+/* Dashboard-only clean mobile masthead and transparent navigation */
+.dashboard-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.dashboard-view-site{font-size:13px;font-weight:700;white-space:nowrap;color:#d8b176;text-decoration:none;border:1px solid #b38b5360;border-radius:10px;padding:10px 12px;min-height:44px;display:inline-flex;align-items:center}
+#dashboardSignout{min-height:46px;margin:0 auto 16px;padding:12px 28px}
+body:has(#dashboard:not(.hide)) header{display:none!important}
+body:has(#dashboard:not(.hide)) #dashboardSignout{display:inline-flex!important;align-items:center;justify-content:center}
+#dashboard .tabs{background:transparent!important;box-shadow:none!important;border:0!important}
+#dashboard .tabs::before,#dashboard .tabs::after{display:none!important}
+@media(max-width:700px){
+ body:has(#dashboard:not(.hide)) main{padding-top:22px}
+ #dashboard .dashboard-top{margin-bottom:12px}
+ #dashboard .dashboard-top .eyebrow{font-size:clamp(9px,2.5vw,12px);letter-spacing:.12em}
+ #dashboard .dashboard-view-site{font-size:12px;padding:9px 10px}
+ #dashboard .tabs{top:0!important;background:transparent!important;box-shadow:none!important;padding:8px 0 10px!important}
+ #dashboard .tab{box-shadow:none}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
 <section id="auth" class="panel auth"><div class="cinema-ticket">✦ ADMIT ONE · STAFF ACCESS ✦</div><div class="eyebrow">Behind the silver screen</div><h1>Your show starts here.</h1><p>The curtain is up. Sign in to enter Benjamin Pearce’s private studio.</p><form id="loginForm"><div class="field"><label for="email">Email</label><input id="email" type="email" value="benpearce@srccvde.com" autocomplete="username" required></div><div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required></div><button class="btn" type="submit">Sign in →</button></form><div class="actions"><button id="reset" class="btn secondary" type="button">Forgot password?</button></div><div id="authStatus" class="status" role="status"></div></section>
 <section id="resetPanel" class="panel auth hide"><div class="eyebrow">Account recovery</div><h1>Choose a new password.</h1><form id="resetForm"><div class="field"><label for="newPassword">New password (at least 12 characters)</label><input id="newPassword" type="password" minlength="12" autocomplete="new-password" required></div><button class="btn" type="submit">Update password</button></form><div id="resetStatus" class="status" role="status"></div></section>
-<section id="dashboard" class="hide"><div class="eyebrow">The director's control room</div><h1>Portfolio dashboard</h1><p class="muted">Signed in as <span id="who"></span>. Draft changes remain private until published.</p>
+<section id="dashboard" class="hide"><div class="dashboard-top"><div class="eyebrow">The director's control room</div><a class="dashboard-view-site" href="../">← View site</a></div><h1>Portfolio dashboard</h1><p class="muted">Signed in as <span id="who"></span>. Draft changes remain private until published.</p>
 <div class="tabs" role="tablist"><button class="tab" data-tab="links" aria-selected="true">Links</button><button class="tab" data-tab="content" aria-selected="false">Site text</button><button class="tab" data-tab="media" aria-selected="false">Media</button><button class="tab" data-tab="analytics" aria-selected="false">Analytics</button></div>
 <section id="linksTab" class="panel"><h2>Manage links</h2><p>Add, edit, reorder, or hide social and portfolio links. Use Publish to make a saved link public.</p><div id="linksList"></div><h2>Add a link</h2><form id="addLink"><div class="grid"><div class="field"><label>Title</label><input name="label" required placeholder="Instagram"></div><div class="field"><label>URL</label><input name="url" type="url" required placeholder="https://..."></div><div class="field"><label>Category</label><input name="category" value="social"></div><div class="field"><label>Order</label><input name="position" type="number" value="0"></div></div><button class="btn" type="submit">Add draft link</button></form></section>
 <section id="contentTab" class="panel hide"><h2>Site text & settings</h2><p>Edit the content sections below. Save a draft, then publish when ready.</p><div id="contentList"></div></section>
 <section id="mediaTab" class="panel hide"><h2>Photos & videos</h2><p>Upload images (up to 10 MB) or add video references. Uploads are stored in Supabase; videos stay hosted on their original platform.</p><form id="uploadImage"><div class="grid"><div class="field"><label>Photo title</label><input name="title" required placeholder="Profile portrait"></div><div class="field"><label>Placement</label><select name="placement"><option value="profile">Profile photo</option><option value="hero">Director's Cut artwork</option><option value="gallery">Gallery / other</option></select></div></div><div class="field"><label>Choose image</label><input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/avif" required></div><button class="btn" type="submit">Upload image as draft</button></form><hr style="border-color:#ffffff1a;margin:26px 0"><form id="addVideo"><div class="grid"><div class="field"><label>Video title</label><input name="title" required></div><div class="field"><label>Platform</label><select name="kind"><option value="youtube">YouTube</option><option value="tiktok">TikTok</option></select></div></div><div class="field"><label>Video URL</label><input name="external_url" type="url" required placeholder="https://..."></div><button class="btn" type="submit">Add video draft</button></form><h2 style="margin-top:25px">Media library</h2><div id="mediaList"></div></section>
 <section id="analyticsTab" class="panel hide"><h2>Site analytics</h2><p>Page views and link clicks will appear after the public website's tracking integration is enabled.</p><div class="stats"><div class="stat"><span class="muted">Page views · 30 days</span><strong id="views">0</strong></div><div class="stat"><span class="muted">Link clicks · 30 days</span><strong id="clicks">0</strong></div><div class="stat"><span class="muted">Events · 30 days</span><strong id="events">0</strong></div></div><h2 style="margin-top:24px">Daily activity</h2><div id="analyticsList" class="empty">No events recorded yet.</div></section>
 <div id="dashStatus" class="status" role="status"></div></section>
-</main><footer>BENJAMIN PEARCE · BUILT BY SRCcvde</footer>
+</main><footer><button id="dashboardSignout" class="btn secondary hide" type="button">Sign out</button><div>BENJAMIN PEARCE · BUILT BY SRCcvde</div></footer>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
@@ -266,6 +283,7 @@ document.addEventListener('click',e=>{
  if(!e.target.closest('.help-wrap'))document.querySelectorAll('.help-active').forEach(w=>{w.classList.remove('help-active');w.querySelector('.help-icon')?.setAttribute('aria-expanded','false')});
 });
 
+$('dashboardSignout').addEventListener('click',()=>$('signout').click());
 db.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){sessionStorage.setItem('bp-recovery','1');setTimeout(route,0)}});
 document.body.classList.add('cinema-open');
 route().catch(e=>fail(e,'authStatus'));
