@@ -58,7 +58,8 @@ function visibleFraction(card){
   const bottom=top+(view?view.height:window.innerHeight);
   return Math.max(0,Math.min(rect.bottom,bottom)-Math.max(rect.top,top))/Math.max(Math.min(rect.height,bottom-top),1);
 }
-function choose(){
+function choose(){return;
+
   if(document.hidden){select(null);return}
   let best=null,bestRatio=0;
   cards.forEach(card=>{
@@ -74,6 +75,7 @@ function choose(){
 function schedule(){clearTimeout(settleTimer);settleTimer=setTimeout(choose,260)}
 const observer=new IntersectionObserver(schedule,{threshold:[0,.25,.45,.55,.7,.85,1]});
 cards.forEach(card=>{
+  card.querySelector('.preview-play')?.addEventListener('click',()=>select(card));
   observer.observe(card);
   card.querySelector('.next-video')?.addEventListener('click',()=>{
     if(active!==card){select(card)}else{stop(card);load(card,true)}
@@ -86,7 +88,7 @@ if(window.visualViewport){
   window.visualViewport.addEventListener('scroll',schedule,{passive:true});
 }
 document.addEventListener('visibilitychange',()=>{if(document.hidden)select(null);else schedule()});
-requestAnimationFrame(schedule);
+
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
   try{
