@@ -33,6 +33,8 @@ function load(card,advance=false){
     if(episode)episode.textContent='Episode '+(index+1)+' of '+list.length;
     iframe.src='https://www.tiktok.com/player/v1/'+id+'?autoplay=1&muted=1&controls=1&description=0&music_info=0';
   }else{
+    const videoUrl='https://www.youtube.com/watch?v='+encodeURIComponent(list[index]);
+    card.querySelectorAll('.visit-button').forEach(a=>a.href=videoUrl);
     iframe.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(list[index])+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
   }
 }
