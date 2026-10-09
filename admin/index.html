@@ -59,6 +59,18 @@ body:has(#auth:not(.hide)) header>.actions,body:has(#resetPanel:not(.hide)) head
 body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:135px}
 body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:164px}
 }
+
+/* Fine-tuned marquee breathing room */
+body:has(#auth:not(.hide)) header,body:has(#resetPanel:not(.hide)) header{height:118px}
+body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:24px}
+body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:153px}
+body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:180px}
+@media(max-width:600px){
+body:has(#auth:not(.hide)) header,body:has(#resetPanel:not(.hide)) header{height:115px}
+body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:22px}
+body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:160px}
+body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:188px}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
