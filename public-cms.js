@@ -36,10 +36,10 @@ function addMedia(media,links){
   card.dataset.playlist=ids.join(',');card.dataset.collection=x.placement||'films';
   card.querySelectorAll('h3').forEach(el=>el.textContent=x.title);
   card.querySelectorAll('.embed-poster span').forEach(el=>el.textContent=x.title);
-  const link=links.find(l=>l.category==='channel'&&l.label.toLowerCase()===x.title.toLowerCase());
+  const link=links.find(l=>l.category==='channel'&&l.label.toLowerCase()===x.title.toLowerCase()) || links.filter(l=>l.category==='channel').sort((a,b)=>a.position-b.position)[videos.filter(v=>v.kind==='youtube').findIndex(v=>v.id===x.id)];
   const url=validUrl(x.external_url);
-  card.querySelectorAll('.visit-button').forEach(a=>{if(url)a.href=url;if(link)a.dataset.linkId=link.id});
-  feed.append(card);
+  card.querySelectorAll('.visit-button').forEach(a=>{if(link){a.href=validUrl(link.url)||url||'#';a.dataset.linkId=link.id}else if(url)a.href=url});
+  feed.insertBefore(card,feed.querySelector('.static-card'));
  });
  const photos=media.filter(x=>x.published&&x.kind==='photo');
  const profile=photos.filter(x=>x.placement==='profile').at(-1);
