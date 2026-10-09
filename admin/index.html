@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0c1018"><title>Ben Pearce · Studio Admin</title>
 <style>
 :root{color-scheme:dark;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:#0b0e14;color:#f3f1ed}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top right,#24202b 0,transparent 50%),#0b0e14}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:#d8b176}header{padding:20px max(22px,calc((100vw - 1100px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff16;background:#0c1018d9;gap:12px}.brand{letter-spacing:.19em;font-size:13px;font-weight:800}.brand span{color:#d7ad69}.sub{color:#a4a2a3;font-size:12px;letter-spacing:.12em;margin-top:5px}main{max-width:1100px;margin:auto;padding:28px 20px 80px}.panel{border:1px solid #ffffff20;border-radius:18px;background:#151922;padding:24px;margin-bottom:20px;box-shadow:0 14px 35px #0002}.auth{max-width:430px;margin:10vh auto}.eyebrow{color:#d7ad69;font-size:11px;letter-spacing:.22em;font-weight:800;text-transform:uppercase}h1{font-size:clamp(29px,4vw,44px);margin:10px 0}h2{margin:0 0 15px;font-size:21px}p{color:#a9adb5;line-height:1.55}.muted{color:#a9adb5;font-size:13px}.field{display:grid;gap:7px;margin:12px 0}label{font-size:12px;font-weight:650;color:#d8dbe0}input,textarea,select{width:100%;background:#0c1119;border:1px solid #41454d;border-radius:10px;color:white;padding:12px;min-height:44px}textarea{min-height:95px;resize:vertical}input:focus,textarea:focus{outline:2px solid #c79a56;outline-offset:1px}.btn{background:#d7ad69;border:1px solid #d7ad69;color:#15120e;font-weight:750;border-radius:10px;padding:11px 16px;min-height:42px}.btn.secondary{background:#252b35;border-color:#4a4d55;color:#fff}.btn.danger{background:#44242a;border-color:#82434b;color:#ffe5e5}.btn:disabled{opacity:.45;cursor:wait}.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:16px}.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;margin-bottom:15px}.tab{white-space:nowrap;background:#1b2029;border:1px solid #ffffff25;color:#e9e7e3;border-radius:12px;padding:12px 16px}.tab[aria-selected=true]{background:#d7ad69;color:#15120e;font-weight:800}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.stat{padding:18px;background:#0d121b;border-radius:13px}.stat strong{display:block;font-size:28px;margin-top:8px}.item{padding:17px;border:1px solid #ffffff25;border-radius:13px;margin:12px 0;background:#11151e}.item-head{display:flex;justify-content:space-between;align-items:center;gap:12px}.tag{font-size:11px;color:#c5a16d;border:1px solid #b38b5359;border-radius:20px;padding:5px 9px}.status{min-height:23px;font-size:13px;color:#b9c1c8;margin-top:12px}.status.error{color:#ff9a9a}.status.ok{color:#b6dfb8}.hide{display:none!important}.preview{width:110px;height:85px;object-fit:cover;border-radius:10px;background:#222}.note{border-left:3px solid #d7ad69;padding:12px 15px;background:#d7ad6910;color:#c9c8c8;font-size:13px}.empty{padding:20px;border:1px dashed #555;border-radius:12px;color:#adb0b6}table{border-collapse:collapse;width:100%}td,th{text-align:left;border-bottom:1px solid #ffffff18;padding:11px 7px;font-size:13px}th{color:#b2b7c0}footer{text-align:center;color:#7c818b;font-size:12px;padding:35px}@media(max-width:650px){.grid,.stats{grid-template-columns:1fr}.panel{padding:17px}header{padding:17px}.item-head{align-items:flex-start;flex-direction:column}}
-.help-wrap{display:inline-flex;position:relative;vertical-align:middle;margin-left:5px}.help-icon{width:22px;height:22px;border:1px solid #d7ad69;border-radius:50%;background:#29241d;color:#f0cb90;font-size:13px;font-weight:800;padding:0;line-height:1}.help-pop{display:none;position:absolute;z-index:100;left:0;top:calc(100% + 9px);width:min(320px,calc(100vw - 65px));background:#252a35;color:#f3f1ed;border:1px solid #b8935f;border-radius:12px;padding:14px;box-shadow:0 14px 40px #0009;font-size:12px;line-height:1.5;font-weight:400}.help-pop span{display:block;margin-top:9px}.help-pop code{color:#f3c88a;overflow-wrap:anywhere}.help-wrap:hover .help-pop,.help-wrap:focus-within .help-pop{display:block}
+.help-wrap{display:inline-flex;position:relative;vertical-align:middle;margin-left:5px}.help-icon{width:22px;height:22px;border:1px solid #d7ad69;border-radius:50%;background:#29241d;color:#f0cb90;font-size:13px;font-weight:800;padding:0;line-height:1}.help-pop{display:none;position:absolute;z-index:100;left:0;top:calc(100% + 9px);width:min(320px,calc(100vw - 65px));background:#252a35;color:#f3f1ed;border:1px solid #b8935f;border-radius:12px;padding:14px;box-shadow:0 14px 40px #0009;font-size:12px;line-height:1.5;font-weight:400}.help-pop span{display:block;margin-top:9px}.help-pop code{color:#f3c88a;overflow-wrap:anywhere}.help-wrap:hover .help-pop,.help-wrap:focus-within .help-pop,.help-wrap.help-active .help-pop{display:block}
 body:has(#auth:not(.hide)),body:has(#resetPanel:not(.hide)){background:#050407;color:#f9ebd5}
 body:has(#auth:not(.hide)) header,body:has(#resetPanel:not(.hide)) header{position:relative;z-index:12;background:#09070b}
 body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{max-width:none;min-height:calc(100svh - 135px);padding:0;display:grid;place-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 18%,#a779392b,transparent 55%),#050406}
@@ -98,6 +98,60 @@ body:has(#auth:not(.hide)) .auth .field,body:has(#resetPanel:not(.hide)) .auth .
 
 /* Mobile: raise the View Site control slightly within the marquee */
 @media(max-width:600px){body:has(#auth:not(.hide)) header>.actions,body:has(#resetPanel:not(.hide)) header>.actions{top:81px}}
+
+/* Mobile-first admin workspace: safe areas, touch targets and readable editors */
+html{max-width:100%;overflow-x:clip;-webkit-text-size-adjust:100%}
+body{max-width:100%;overflow-x:clip}
+button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #e5b976;outline-offset:3px}
+#dashboard{min-width:0}
+#dashboard .tabs{scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+#dashboard .tabs::-webkit-scrollbar{display:none}
+#dashboard .tab{scroll-snap-align:start;min-height:48px}
+#dashboard .item,#dashboard .panel,#dashboard .field{min-width:0}
+#dashboard input,#dashboard textarea,#dashboard select{max-width:100%;font-size:16px}
+#dashboard textarea{overflow-wrap:anywhere;line-height:1.5}
+#dashboard .item-head strong{overflow-wrap:anywhere}
+#dashboard .actions .btn{min-height:46px}
+#dashboard .help-icon{width:32px;height:32px;touch-action:manipulation}
+#dashboard .help-pop{max-width:calc(100vw - 50px)}
+#dashboard table{min-width:300px}
+#dashboard #analyticsList{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#dashboard .tag{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:700px){
+ body:not(:has(#auth:not(.hide))):not(:has(#resetPanel:not(.hide))) header{position:sticky;top:0;z-index:40;min-height:68px;padding:12px max(14px,env(safe-area-inset-right)) 12px max(14px,env(safe-area-inset-left));background:#0c1018f5;backdrop-filter:blur(14px)}
+ body:not(:has(#auth:not(.hide))):not(:has(#resetPanel:not(.hide))) header .brand{font-size:12px;letter-spacing:.08em}
+ body:not(:has(#auth:not(.hide))):not(:has(#resetPanel:not(.hide))) header .sub{font-size:9px;letter-spacing:.07em}
+ body:not(:has(#auth:not(.hide))):not(:has(#resetPanel:not(.hide))) header .actions{gap:7px;flex-wrap:nowrap}
+ body:not(:has(#auth:not(.hide))):not(:has(#resetPanel:not(.hide))) header .actions a{font-size:12px;white-space:nowrap}
+ body:not(:has(#auth:not(.hide))):not(:has(#resetPanel:not(.hide))) header #signout{padding:9px 10px;font-size:12px}
+ main{padding:20px max(14px,env(safe-area-inset-right)) calc(90px + env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+ #dashboard h1{font-size:clamp(27px,8vw,36px);line-height:1.1}
+ #dashboard .panel{padding:17px 14px;border-radius:15px}
+ #dashboard .grid,#dashboard .stats{grid-template-columns:minmax(0,1fr);gap:9px}
+ #dashboard .item{padding:14px 12px}
+ #dashboard .item-head{flex-direction:row;align-items:center;flex-wrap:wrap}
+ #dashboard .tabs{position:sticky;top:67px;z-index:35;background:#0b0e14;padding:9px 0 12px;margin-left:-2px;margin-right:-2px}
+ #dashboard .tab{flex:0 0 auto;padding:12px 16px}
+ #dashboard .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ #dashboard .actions .btn{width:100%;white-space:normal;overflow-wrap:anywhere}
+ #dashboard .actions .btn.danger{grid-column:1/-1}
+ #dashboard .stat{padding:15px}
+ #dashboard .stat strong{font-size:25px}
+ #dashboard .help-pop{left:auto;right:-20px;width:min(310px,calc(100vw - 50px))}
+ #dashboard .help-pop span{font-size:12px}
+ footer{padding:20px 15px calc(24px + env(safe-area-inset-bottom))}
+}
+@media(max-width:380px){
+ #dashboard .actions{grid-template-columns:1fr}
+ #dashboard .actions .btn.danger{grid-column:auto}
+ #dashboard .panel{padding:13px 11px}
+ #dashboard .item{padding:12px 10px}
+ body:not(:has(#auth:not(.hide))):not(:has(#resetPanel:not(.hide))) header .sub{display:none}
+}
+@media(hover:none){
+ .help-wrap:focus-within .help-pop{display:block}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
@@ -136,13 +190,13 @@ async function route(){
  $('auth').classList.toggle('hide',allowed);
  $('dashboard').classList.toggle('hide',!allowed||recovery);
  $('signout').classList.toggle('hide',!allowed);
- if(allowed&&!recovery){$('who').textContent=user.email;await loadAll()}
+ if(allowed&&!recovery){$('who').textContent=user.email;await loadAll();const saved=sessionStorage.getItem('bp-admin-tab');if(saved)document.querySelector('.tab[data-tab="'+saved+'"]')?.click()}
 }
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;const {error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});b.disabled=false;if(error)fail(error,'authStatus');else await route()});
 $('reset').addEventListener('click',async()=>{const email=$('email').value.trim();if(!email){message('authStatus','Enter your email address first.',true);return}const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:BASE+'admin/'});if(error)fail(error,'authStatus');else message('authStatus','If the account is eligible, a password-reset email has been requested.')});
 $('resetForm').addEventListener('submit',async e=>{e.preventDefault();const {error}=await db.auth.updateUser({password:$('newPassword').value});if(error)fail(error,'resetStatus');else{sessionStorage.removeItem('bp-recovery');history.replaceState(null,'',location.pathname);message('resetStatus','Password updated.');await route()}});
 $('signout').addEventListener('click',async()=>{sessionStorage.removeItem('bp-recovery');await db.auth.signOut();location.reload()});
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t===b)));['links','content','media','analytics'].forEach(t=>$(t+'Tab').classList.toggle('hide',t!==b.dataset.tab))}));
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{sessionStorage.setItem('bp-admin-tab',b.dataset.tab);document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',String(t===b)));['links','content','media','analytics'].forEach(t=>$(t+'Tab').classList.toggle('hide',t!==b.dataset.tab))}));
 async function loadAll(){await Promise.all([loadLinks(),loadContent(),loadMedia(),loadAnalytics()])}
 async function loadLinks(){
  const {data,error}=await db.from('site_links').select('*').order('position');
@@ -180,6 +234,14 @@ async function loadAnalytics(){
  $('views').textContent=total('page_view').toLocaleString();$('clicks').textContent=total('link_click').toLocaleString();$('events').textContent=data.reduce((a,x)=>a+Number(x.event_count),0).toLocaleString();
  $('analyticsList').innerHTML=data.length?'<table><thead><tr><th>Date (UTC)</th><th>Event</th><th>Count</th></tr></thead><tbody>'+data.map(x=>'<tr><td>'+esc(x.day)+'</td><td>'+esc(x.event_type)+'</td><td>'+esc(x.event_count)+'</td></tr>').join('')+'</tbody></table>':'No events recorded yet.';
 }
+
+/* Touch-friendly help popovers and remembered dashboard section. */
+document.addEventListener('click',e=>{
+ const help=e.target.closest('.help-icon');
+ if(help){e.preventDefault();const wrap=help.closest('.help-wrap');const open=wrap.classList.toggle('help-active');help.setAttribute('aria-expanded',String(open));return}
+ if(!e.target.closest('.help-wrap'))document.querySelectorAll('.help-active').forEach(w=>{w.classList.remove('help-active');w.querySelector('.help-icon')?.setAttribute('aria-expanded','false')});
+});
+
 db.auth.onAuthStateChange((event)=>{if(event==='PASSWORD_RECOVERY'){sessionStorage.setItem('bp-recovery','1');setTimeout(route,0)}});
 document.body.classList.add('cinema-open');
 route().catch(e=>fail(e,'authStatus'));
