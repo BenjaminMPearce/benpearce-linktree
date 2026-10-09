@@ -94,3 +94,10 @@ footer{width:min(100%,var(--max));margin:auto;padding:20px 0 92px;border-top:1px
 .watch-content .portrait-video .embed-poster{display:none}
 
 .portrait{overflow:hidden}.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+
+/* No bottom navigation; preserve only the device safe area. */
+.mobile-dock{display:none!important}
+.media-feed{padding-bottom:24px!important}
+footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
+.watch-panel{max-height:calc(100dvh - 36px - env(safe-area-inset-bottom))}
+.watch-content .preview-frame.portrait-video{max-height:calc(100dvh - 190px);width:min(100%,calc((100dvh - 190px)*9/16))}
