@@ -42,6 +42,23 @@ body:has(#auth:not(.hide)) .cinema .proscenium:before,body:has(#resetPanel:not(.
 body:has(#auth:not(.hide)) .auth,body:has(#resetPanel:not(.hide)) .auth{margin:0 auto 24px;align-self:start;max-width:440px}
 body:has(#auth:not(.hide)) footer,body:has(#resetPanel:not(.hide)) footer{background:#050407;position:relative;z-index:15}
 @media(max-width:600px){body:has(#auth:not(.hide)) header,body:has(#resetPanel:not(.hide)) header{height:120px;padding:9px 12px}body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:17px;width:92%}body:has(#auth:not(.hide)) header .brand,body:has(#resetPanel:not(.hide)) header .brand{font-size:18px;letter-spacing:.1em}body:has(#auth:not(.hide)) header .sub,body:has(#resetPanel:not(.hide)) header .sub{font-size:9px;letter-spacing:.12em}body:has(#auth:not(.hide)) header>.actions,body:has(#resetPanel:not(.hide)) header>.actions{position:absolute;right:12px;top:84px}body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:172px}body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:148px}}
+
+/* Compact cinema marquee: lettering fills the curtain instead of floating above empty velvet */
+body:has(#auth:not(.hide)) header,body:has(#resetPanel:not(.hide)) header{height:96px}
+body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:15px}
+body:has(#auth:not(.hide)) header .brand,body:has(#resetPanel:not(.hide)) header .brand{font-size:clamp(21px,3.1vw,39px);line-height:1.08}
+body:has(#auth:not(.hide)) header .sub,body:has(#resetPanel:not(.hide)) header .sub{margin-top:5px;font-size:clamp(10px,1.12vw,13px)}
+body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:118px}
+body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:145px}
+@media(max-width:600px){
+body:has(#auth:not(.hide)) header,body:has(#resetPanel:not(.hide)) header{height:100px}
+body:has(#auth:not(.hide)) header>div:first-child,body:has(#resetPanel:not(.hide)) header>div:first-child{top:17px;width:96%}
+body:has(#auth:not(.hide)) header .brand,body:has(#resetPanel:not(.hide)) header .brand{font-size:clamp(18px,5vw,25px);letter-spacing:.07em}
+body:has(#auth:not(.hide)) header .sub,body:has(#resetPanel:not(.hide)) header .sub{font-size:9px;letter-spacing:.1em}
+body:has(#auth:not(.hide)) header>.actions,body:has(#resetPanel:not(.hide)) header>.actions{top:105px;right:12px}
+body:has(#auth:not(.hide)) .cinema .valance,body:has(#resetPanel:not(.hide)) .cinema .valance{height:135px}
+body:has(#auth:not(.hide)) main,body:has(#resetPanel:not(.hide)) main{padding-top:164px}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
