@@ -244,3 +244,6 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 /* r42: genuine uploaded lightsaber photo, not an embedded substitute. */
 .director-art{background-image:linear-gradient(90deg,rgba(5,9,12,.91) 0%,rgba(5,9,12,.68) 46%,rgba(5,9,12,.18) 100%),url('./directors-cut-saber.webp')!important;background-size:cover!important;background-position:55% 40%!important}
 @media(max-width:420px){.director-art{background-position:55% center!important}}
+
+/* r44: recenter Ben's face inside the existing gold portrait ring. */
+.hero .portrait img{transform:translateX(9%) scale(1.08);transform-origin:center center}
