@@ -247,3 +247,6 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 
 /* r44: recenter Ben's face inside the existing gold portrait ring. */
 .hero .portrait img{transform:translateX(9%) scale(1.08);transform-origin:center center}
+
+/* r45: user-supplied gold-ring circular portrait as Director's Cut backdrop. */
+.director-art{background-image:linear-gradient(90deg,rgba(5,9,12,.88) 0%,rgba(5,9,12,.68) 48%,rgba(5,9,12,.28) 100%),url('./director-circle-new.webp')!important;background-size:cover!important;background-position:50% 44%!important}
