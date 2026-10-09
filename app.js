@@ -54,12 +54,13 @@ function visibleFraction(card){
   const view=window.visualViewport;
   const top=view?view.offsetTop:0;
   const bottom=top+(view?view.height:window.innerHeight);
-  return Math.max(0,Math.min(rect.bottom,bottom)-Math.max(rect.top,top))/Math.max(rect.height,1);
+  return Math.max(0,Math.min(rect.bottom,bottom)-Math.max(rect.top,top))/Math.max(Math.min(rect.height,bottom-top),1);
 }
 function choose(){
   if(document.hidden){select(null);return}
   let best=null,bestRatio=0;
   cards.forEach(card=>{
+    if(card.hidden)return;
     const ratio=visibleFraction(card);
     if(ratio>bestRatio){bestRatio=ratio;best=card}
   });
@@ -93,3 +94,12 @@ if(shareButton)shareButton.addEventListener('click',async()=>{
   setTimeout(()=>{if(shareStatus)shareStatus.textContent=''},1800);
 });
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+
+// r35: browseable collections without remounting video cards or changing their playlist state.
+const collectionChips=[...document.querySelectorAll('.collection-chip')];
+collectionChips.forEach(chip=>chip.addEventListener('click',()=>{
+  const selected=chip.dataset.collection;
+  collectionChips.forEach(item=>{const on=item===chip;item.classList.toggle('selected',on);item.setAttribute('aria-pressed',String(on))});
+  document.querySelectorAll('.media-card').forEach(card=>{const visible=selected==='all'||card.dataset.collection===selected;card.hidden=!visible;if(!visible&&card===active)select(null)});
+  schedule();
+}));
