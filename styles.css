@@ -142,3 +142,9 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 .media-card .preview-frame,.media-card .tiktok-media{background:#080a0d!important}
 .media-card .embed-poster{background-color:#101217!important}
 .media-card.playing .media-embed{background:#080a0d!important}
+
+/* r29: premium dark emerald gradient lettering, hairline gold type outline; no banner. */
+.brand-footer,.brand-footer-link{background:transparent!important;border:0!important;box-shadow:none!important}
+.brand-footer-link{color:#d6c7a3!important;font-weight:650;letter-spacing:.025em}
+.brand-footer-link strong{display:inline-block;background:linear-gradient(115deg,#07160f 0%,#123e2a 38%,#216744 72%,#0b281c 100%)!important;background-clip:text!important;-webkit-background-clip:text!important;color:transparent!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke:.65px #d8b968;text-shadow:none!important;font-weight:900;letter-spacing:.065em;filter:drop-shadow(0 1px 1px rgba(216,185,104,.2))}
+.brand-footer-link span{color:#bfa66b}
