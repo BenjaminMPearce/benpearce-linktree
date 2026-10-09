@@ -226,3 +226,8 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 .media-card .preview-play:before{content:"";position:absolute;z-index:-1;top:50%;left:50%;width:66px;height:66px;transform:translate(-50%,-50%);border-radius:50%;background:rgba(9,16,23,.76);border:1px solid rgba(234,206,151,.55);box-shadow:0 8px 35px rgba(0,0,0,.5)}
 .media-card.playing .preview-play{display:none}
 .media-card .next-video{min-height:44px}
+
+/* r39: maintain an accessible, explicit video start affordance. */
+.media-card .preview-play:focus-visible{outline:3px solid #f0dcae;outline-offset:-5px}
+.media-card .preview-play:hover{background:rgba(9,16,23,.13)}
+.media-card .preview-play{touch-action:manipulation}
