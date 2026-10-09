@@ -208,3 +208,21 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 @keyframes premiere-breathe{from{opacity:.45;transform:scale(.96)}to{opacity:1;transform:scale(1.06)}}
 @keyframes premiere-light{from{transform:translateX(-40%)}to{transform:translateX(40%)}}
 @media(prefers-reduced-motion:reduce){.hero:before,.director-cut:after{animation:none!important}}
+
+/* r38: visitors reach the content quickly and choose when to play. */
+.hero{padding-top:8px!important;padding-bottom:8px!important}
+.hero .portrait{width:58px;height:58px;margin-bottom:9px}
+.hero h1{font-size:clamp(1.9rem,8vw,2.65rem)}
+.hero .lede{margin-top:7px;font-size:.81rem}
+.hero .social-row{margin-top:10px}
+.director-cut{min-height:0;margin:10px auto 18px}
+.director-content{min-height:0;padding:17px 20px}
+.director-overline{margin:17px 0 6px}
+.director-content h2{font-size:clamp(1.5rem,6vw,2.1rem)}
+.director-content>p:not(.director-kicker):not(.director-overline){margin-bottom:11px}
+.hero:before,.director-cut:after{animation:none!important}
+.media-card .preview-frame:before{display:none!important}
+.media-card .preview-play{position:absolute;z-index:5;inset:0;width:100%;border:0;display:grid;place-content:center;gap:8px;justify-items:center;background:transparent;color:#f0dcae;font-weight:800;font-size:.88rem;text-shadow:0 2px 12px #000;cursor:pointer}
+.media-card .preview-play:before{content:"";position:absolute;z-index:-1;top:50%;left:50%;width:66px;height:66px;transform:translate(-50%,-50%);border-radius:50%;background:rgba(9,16,23,.76);border:1px solid rgba(234,206,151,.55);box-shadow:0 8px 35px rgba(0,0,0,.5)}
+.media-card.playing .preview-play{display:none}
+.media-card .next-video{min-height:44px}
