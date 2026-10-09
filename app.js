@@ -57,7 +57,8 @@ function checkPlaybackVisibility(){
   if(!active)return;
   if(document.hidden||visibleFraction(active)<.12){stop(active);active=null;}
 }
-function schedule(){clearTimeout(scrollTimer);scrollTimer=setTimeout(checkPlaybackVisibility,150)}
+function schedule(){clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{checkPlaybackVisibility();chooseAutoplay()},220)}
+function chooseAutoplay(){if(document.hidden||active)return;let best=null,score=0;cards.forEach(card=>{const n=visibleFraction(card);if(n>score){best=card;score=n}});if(best&&score>.6)select(best)}
 cards.forEach(card=>{
   const play=card.querySelector('.preview-play');
   play?.addEventListener('click',()=>{if(active===card)return;select(card)});
@@ -72,7 +73,8 @@ cards.forEach(card=>{
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',schedule,{passive:true});
 if(window.visualViewport){window.visualViewport.addEventListener('resize',schedule,{passive:true});window.visualViewport.addEventListener('scroll',schedule,{passive:true})}
-document.addEventListener('visibilitychange',checkPlaybackVisibility);
+document.addEventListener('visibilitychange',()=>{checkPlaybackVisibility();if(!document.hidden)schedule()});
+requestAnimationFrame(schedule);
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
   try{
