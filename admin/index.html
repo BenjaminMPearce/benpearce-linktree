@@ -209,6 +209,34 @@ body:has(#dashboard:not(.hide)) #dashboardSignout{margin:0 auto 10px;min-height:
 #publishConfirm{border:1px solid #b99560;border-radius:18px;background:#171a22;color:#f3f1ed;padding:24px;width:min(420px,calc(100vw - 32px));box-shadow:0 20px 65px #000a}
 #publishConfirm::backdrop{background:#000a;backdrop-filter:blur(3px)}
 #publishConfirm h2{margin:0 0 8px}#publishConfirm p{margin:0 0 20px}#publishConfirm .actions{display:flex;flex-wrap:wrap;gap:10px}#publishConfirm button{flex:1;min-width:120px}
+
+/* Subtle 35mm film-strip rails framing the signed-in dashboard only. */
+body:has(#dashboard:not(.hide)){
+ background:radial-gradient(ellipse at 70% 8%,#27202b 0,transparent 56%),#0b0e14;
+}
+body:has(#dashboard:not(.hide))::before,
+body:has(#dashboard:not(.hide))::after{
+ content:"";position:fixed;top:0;bottom:0;width:clamp(22px,5vw,58px);
+ pointer-events:none;z-index:0;opacity:.48;
+ background:
+ radial-gradient(ellipse 5px 8px at 50% 14px,#0b0e14 96%,transparent 100%) center top/100% 34px repeat-y,
+ linear-gradient(90deg,#050608,#27232a 16%,#3c3230 45%,#1d1d23 75%,#050608);
+ border-left:1px solid #c39b6540;border-right:1px solid #c39b6540;
+ box-shadow:inset 0 0 12px #0009,0 0 25px #0008;
+}
+body:has(#dashboard:not(.hide))::before{left:0}
+body:has(#dashboard:not(.hide))::after{right:0}
+body:has(#dashboard:not(.hide)) main,
+body:has(#dashboard:not(.hide)) footer{position:relative;z-index:1}
+@media(max-width:700px){
+ body:has(#dashboard:not(.hide))::before,
+ body:has(#dashboard:not(.hide))::after{width:12px;opacity:.3;background-size:100% 27px}
+ body:has(#dashboard:not(.hide)) main{padding-left:20px;padding-right:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ body:has(#dashboard:not(.hide))::before,
+ body:has(#dashboard:not(.hide))::after{animation:none}
+}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
