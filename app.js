@@ -11,7 +11,7 @@ function playlist(card){return(card.dataset.playlist||'').split(',').filter(Bool
 function stop(card){
   if(!card)return;
   const iframe=card.querySelector('iframe.media-embed');
-  if(iframe)iframe.removeAttribute('src');
+  if(iframe){iframe.style.visibility='hidden';iframe.removeAttribute('src');}
   card.classList.remove('loading','media-loaded','playing');
 }
 function load(card,advance=false){
@@ -22,9 +22,10 @@ function load(card,advance=false){
   positions.set(card,index);
   const iframe=card.querySelector('iframe.media-embed');
   if(!iframe)return;
+  iframe.style.visibility='hidden';
   card.classList.add('loading','playing');
   card.classList.remove('media-loaded');
-  iframe.onload=()=>{card.classList.remove('loading');card.classList.add('media-loaded')};
+  iframe.onload=()=>{if(card.classList.contains('playing')){iframe.style.visibility='visible';card.classList.remove('loading');card.classList.add('media-loaded')}};
   if(card.dataset.source==='tiktok'){
     const id=list[index];
     const url='https://www.tiktok.com/@bennyp1010/video/'+id;
