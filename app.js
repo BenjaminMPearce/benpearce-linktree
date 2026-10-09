@@ -20,6 +20,8 @@ function load(card,advance=false){
   let index=positions.get(card)||0;
   if(advance)index=(index+1)%list.length;
   positions.set(card,index);
+  const counter=card.querySelector('.video-counter');
+  if(counter)counter.textContent=String(index+1).padStart(2,'0')+' / '+String(list.length).padStart(2,'0');
   const iframe=card.querySelector('iframe.media-embed');
   if(!iframe)return;
   iframe.style.visibility='hidden';
@@ -66,7 +68,7 @@ function choose(){
   });
   if(bestRatio<.55){select(null);return}
   // Avoid switching for tiny changes in visibility.
-  if(active&&visibleFraction(active)>.46&&best!==active&&bestRatio-visibleFraction(active)<.16)return;
+  if(active&&!active.hidden&&visibleFraction(active)>.46&&best!==active&&bestRatio-visibleFraction(active)<.16)return;
   select(best);
 }
 function schedule(){clearTimeout(settleTimer);settleTimer=setTimeout(choose,260)}
