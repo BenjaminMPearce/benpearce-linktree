@@ -264,3 +264,9 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 
 /* r49: bring portrait back into frame on mobile without covering headline. */
 @media(max-width:650px){.director-art{background-size:100% 100%,auto 88%!important;background-position:center,right -12px center!important}}
+
+/* r50: eliminate square image backdrop by clipping the photo itself to a circle. */
+.director-art{background-image:none!important;background-color:transparent!important;overflow:hidden!important}
+.director-art::before{content:"";position:absolute;display:block;width:min(48%,360px);aspect-ratio:1;right:0;top:50%;transform:translateY(-50%);border-radius:50%;background-image:url('./ben-pearce-directors-cut-4k.webp');background-size:cover;background-position:center;background-repeat:no-repeat;box-shadow:0 0 0 1px rgba(216,176,101,.4);opacity:.92}
+.director-art::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(7,11,17,.82) 0%,rgba(7,11,17,.58) 45%,rgba(7,11,17,.05) 100%)}
+@media(max-width:650px){.director-art::before{width:88%;max-width:360px;right:-4%;top:50%;transform:translateY(-50%)}.director-art::after{background:linear-gradient(90deg,rgba(7,11,17,.87) 0%,rgba(7,11,17,.54) 46%,rgba(7,11,17,.03) 100%)}}
