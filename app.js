@@ -45,20 +45,32 @@ function select(card){
   if(active){load(active);}
 }
 function visibleFraction(card){
-  const rect=card.getBoundingClientRect();
+  // Measure the actual video window, not the whole card including text and buttons.
+  const target=card.querySelector('.preview-frame')||card;
+  const rect=target.getBoundingClientRect();
   const view=window.visualViewport;
   const top=view?view.offsetTop:0;
   const bottom=top+(view?view.height:window.innerHeight);
-  return Math.max(0,Math.min(rect.bottom,bottom)-Math.max(rect.top,top))/Math.max(Math.min(rect.height,bottom-top),1);
+  const visible=Math.max(0,Math.min(rect.bottom,bottom)-Math.max(rect.top,top));
+  return visible/Math.max(Math.min(rect.height,bottom-top),1);
 }
-// Keep video loading under the visitor's control, and pause it when off-screen.
+// Start when the preview enters the viewing area, and switch to the next visible preview.
 let scrollTimer;
 function checkPlaybackVisibility(){
   if(!active)return;
-  if(document.hidden||visibleFraction(active)<.12){stop(active);active=null;}
+  if(document.hidden||visibleFraction(active)<.08){stop(active);active=null;}
 }
-function schedule(){clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{checkPlaybackVisibility();chooseAutoplay()},220)}
-function chooseAutoplay(){if(document.hidden||active)return;let best=null,score=0;cards.forEach(card=>{const n=visibleFraction(card);if(n>score){best=card;score=n}});if(best&&score>.6)select(best)}
+function schedule(){clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{checkPlaybackVisibility();chooseAutoplay()},130)}
+function chooseAutoplay(){
+  if(document.hidden)return;
+  let best=null,score=0;
+  cards.forEach(card=>{const n=visibleFraction(card);if(n>score){best=card;score=n}});
+  if(!best||score<.30)return;
+  if(active===best)return;
+  if(active&&visibleFraction(active)>.38&&score<visibleFraction(active)+.18)return;
+  select(best);
+}
+cards.forEach(card=>{const n=visibleFraction(card);if(n>score){best=card;score=n}});if(best&&score>.6)select(best)}
 cards.forEach(card=>{
   const play=card.querySelector('.preview-play');
   play?.addEventListener('click',()=>{if(active===card)return;select(card)});
