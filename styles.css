@@ -151,3 +151,6 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 
 /* r31: legible premium wordmark; prevent decorative-font glyph substitution on final e. */
 .brand-footer-link strong{font-family:Arial,Helvetica,sans-serif!important;font-variant-ligatures:none!important;font-feature-settings:"liga" 0,"calt" 0!important;letter-spacing:.035em!important;font-weight:800!important;background:linear-gradient(120deg,#0b261a 0%,#1c5d3c 48%,#103c2a 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke:1.35px #dfbc66!important;text-shadow:none!important;filter:none!important;padding:0 .04em;paint-order:stroke fill}
+
+/* r32: fine gold hairline, not a heavy outline. */
+.brand-footer-link strong{-webkit-text-stroke:.55px #dfbc66!important}
