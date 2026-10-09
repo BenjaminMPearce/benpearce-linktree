@@ -1,25 +1,68 @@
-# Benjamin Pearce — Media Link Hub
+<div align="center">
 
-Version 1 of Benjamin Pearce's custom media link hub.
+# BENJAMIN PEARCE
+### THE DIRECTOR'S CUT
 
-## Concept
+**Films · Comedy · Stories worth watching**
 
-The site starts with the simplicity of a Linktree-style page, but the primary channel cards expand when they enter the center of the viewport. The expanded state becomes a media preview card, giving visitors a sense of the content before they leave for YouTube or TikTok.
+[**View the portfolio ↗**](https://benjaminmpearce.github.io/benpearce-linktree/) · [**Project documentation**](./docs/MAINTENANCE.md)
 
-### Current sections
-- Benjamin Pearce Films — movie reviews, short films, demo reels
-- TikTok — Stupid News, reviews, sketches and recurring series
-- Red Dragon Productions — comedy, skits, sketches and music
-- Film Arch Entertainment — short films, production work and music
-- Instagram
-- IMDb
+![GitHub Pages](https://img.shields.io/badge/Hosted_on-GitHub_Pages-161b22?style=flat-square&logo=github)
+![Stack](https://img.shields.io/badge/Stack-HTML_%C2%B7_CSS_%C2%B7_JavaScript-161b22?style=flat-square)
+![CMS](https://img.shields.io/badge/Content-Supabase-161b22?style=flat-square&logo=supabase)
 
-## Version 1 note
+</div>
 
-The animated media areas are presentation previews. Once individual YouTube/TikTok video URLs are selected, they can be swapped for real embedded previews while keeping the same scroll-to-expand interaction.
+---
+
+## The experience
+
+A custom, mobile-first filmmaker portfolio for **Benjamin Pearce**, bringing films, comedy, video collections, credits, and social channels into one cinematic destination.
+
+The public experience features a Director's Cut hero, a curated media collection, embedded video previews, and links to Benjamin's creative work. A separate authenticated control room provides content management without editing source code.
+
+## Behind the scenes
+
+| Experience | Capabilities |
+| --- | --- |
+| **Public portfolio** | Responsive cinematic design, media cards, video previews, profile links |
+| **Director's control room** | Edit links, site copy, and media; save drafts; confirm publication |
+| **Content management** | Supabase-backed published content with static-site fallback |
+| **Analytics** | Portfolio views and tracked link interactions |
+| **Delivery** | Static GitHub Pages deployment through GitHub Actions |
+
+## Project structure
+
+```text
+.
+├── index.html            # Public portfolio
+├── styles.css            # Public visual system
+├── app.js                # Public interactions
+├── public-cms.js         # Published-content renderer
+├── admin/
+│   └── index.html        # Authenticated control room
+├── manifest.webmanifest  # App metadata
+├── sw.js                 # Service worker
+├── docs/
+│   └── MAINTENANCE.md    # Operations and handoff notes
+└── .github/
+    └── workflows/
+        └── pages.yml     # Deployment
+```
 
 ## Development
 
-Static HTML/CSS/JavaScript. No build step required.
+This is a static HTML, CSS, and JavaScript project. No bundler or build step is required.
 
-Open `index.html` locally or deploy the `main` branch through GitHub Pages.
+For local development, serve the repository using a local HTTP server (rather than opening `index.html` as a file), so browser fetches and service-worker behavior can be evaluated correctly.
+
+Content is managed in Supabase. The public site loads published data, while the admin requires an authorized account. **Never commit Supabase service-role keys, access tokens, passwords, or customer exports.**
+
+For deployment, CMS behavior, and operational notes, see [Maintenance & handoff](./docs/MAINTENANCE.md).
+
+## Ownership & credits
+
+**Portfolio and creative identity:** Benjamin Pearce  
+**Website design & development:** [SRCcvde](https://srccvde.com)
+
+This repository is published for hosting and project maintenance. Its availability does not imply that the artwork, media, branding, or code are licensed for reuse. Contact the respective rights holders before copying or redistributing project assets.
