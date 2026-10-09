@@ -33,9 +33,15 @@
     </header>
 
     <main>
+      <section class="director-cut" aria-labelledby="directorTitle">
+        <div class="director-art" aria-hidden="true"><img src="./ben-cinematic-avatar.webp" alt="" loading="eager" /></div>
+        <div class="director-content"><p class="director-kicker"><span class="on-air-dot"></span> THE DIRECTOR'S CUT <span class="edition">VOL. 01</span></p><p class="director-overline">A BENJAMIN PEARCE SHOWCASE</p><h2 id="directorTitle">Every story starts somewhere.</h2><p>Films. Comedy. Unexpected turns. Step inside the work of Benjamin Pearce.</p><a class="director-action" href="#mediaFeed">Explore the work <span aria-hidden="true">↗</span></a></div>
+      </section>
+      <div class="showcase-heading"><div><span class="showcase-eyebrow">THE COLLECTION</span><h2>Now showing<span class="showcase-period">.</span></h2></div><span class="showcase-count">04 CHANNELS · 02 PROFILES</span></div>
+      <nav class="collection-nav" aria-label="Browse content"><button type="button" class="collection-chip selected" data-collection="all" aria-pressed="true">All work</button><button type="button" class="collection-chip" data-collection="films" aria-pressed="false">Films</button><button type="button" class="collection-chip" data-collection="comedy" aria-pressed="false">Comedy & news</button><button type="button" class="collection-chip" data-collection="social" aria-pressed="false">Social & credits</button></nav>
       <section class="media-feed" id="mediaFeed" aria-label="Benjamin Pearce media channels">
 
-        <article class="media-card" data-categories="reviews shorts reels" data-source="youtube" data-playlist="CQv0PX1zvoA,UG8G6k8LzXk,_0rj5gMBPRA,R5pkL6bxWOs">
+        <article class="media-card" data-collection="films" data-categories="reviews shorts reels" data-source="youtube" data-playlist="CQv0PX1zvoA,UG8G6k8LzXk,_0rj5gMBPRA,R5pkL6bxWOs">
           <div class="card-compact">
             <div>
               <span class="source-pill">YouTube</span>
@@ -62,7 +68,7 @@
           </div>
         </article>
 
-        <article class="media-card" data-categories="news reviews comedy" data-source="tiktok" data-playlist="7641362985033780493,7641587983111539981,7678470168686677261,7678843026470423822,7679211886096764173,7681067817738784014,7681437541228203277,7681812184808164622,7683664908994497806,7686262971319864589,7686633393878027534,7687004352032165133,7688859626808315149,7689231809460178189,7689603082476358926,7691457209405820173,7691829159760252174,7692199956639124750,7694056581364714765">
+        <article class="media-card" data-collection="comedy" data-categories="news reviews comedy" data-source="tiktok" data-playlist="7641362985033780493,7641587983111539981,7678470168686677261,7678843026470423822,7679211886096764173,7681067817738784014,7681437541228203277,7681812184808164622,7683664908994497806,7686262971319864589,7686633393878027534,7687004352032165133,7688859626808315149,7689231809460178189,7689603082476358926,7691457209405820173,7691829159760252174,7692199956639124750,7694056581364714765">
           <div class="card-compact">
             <div>
               <span class="source-pill">TikTok</span>
@@ -90,7 +96,7 @@
           </div>
         </article>
 
-        <article class="media-card" data-categories="comedy music" data-source="youtube" data-playlist="ubzeDDcWoTg,vsFi-tGq3ZE,YMmu3_IgXns,gEkXbLilo78,S0fqbHTiF6Y,jPcqGvFfZq4,UIGtDeXWVOk,rTRp7KVSBmY,2QSNZpXowSg,lqiP-m09r1s,8ez64BrQ7mw,iv6o8YT8icc,cCOgQpVNuYE,0OBb9_hdoLA,kP7dt-BjI0g">
+        <article class="media-card" data-collection="comedy" data-categories="comedy music" data-source="youtube" data-playlist="ubzeDDcWoTg,vsFi-tGq3ZE,YMmu3_IgXns,gEkXbLilo78,S0fqbHTiF6Y,jPcqGvFfZq4,UIGtDeXWVOk,rTRp7KVSBmY,2QSNZpXowSg,lqiP-m09r1s,8ez64BrQ7mw,iv6o8YT8icc,cCOgQpVNuYE,0OBb9_hdoLA,kP7dt-BjI0g">
           <div class="card-compact">
             <div>
               <span class="source-pill">YouTube</span>
@@ -117,7 +123,7 @@
           </div>
         </article>
 
-        <article class="media-card" data-categories="shorts music" data-source="youtube" data-playlist="SEIJ7ckH7tg,OSnpNbLbOzo,YOSZzU-VuKw,TeIfrKifwSU,hbJgOHgXehA">
+        <article class="media-card" data-collection="films" data-categories="shorts music" data-source="youtube" data-playlist="SEIJ7ckH7tg,OSnpNbLbOzo,YOSZzU-VuKw,TeIfrKifwSU,hbJgOHgXehA">
           <div class="card-compact">
             <div>
               <span class="source-pill">YouTube</span>
@@ -143,7 +149,7 @@
           </div>
         </article>
 
-        <article class="media-card static-card" data-categories="all" data-source="instagram">
+        <article class="media-card static-card" data-collection="social" data-categories="all" data-source="instagram">
           <a class="card-compact static-link" href="https://www.instagram.com/benjaminpearcefilms?stkn=MWQ1Z2F6NXBhb2sxZg==" target="_blank" rel="noreferrer">
             <div>
               <span class="source-pill">Instagram</span>
@@ -154,7 +160,7 @@
           </a>
         </article>
 
-        <article class="media-card static-card" data-categories="all" data-source="imdb">
+        <article class="media-card static-card" data-collection="social" data-categories="all" data-source="imdb">
           <a class="card-compact static-link" href="https://www.imdb.com/name/nm4910822/?ref_=ext_shr" target="_blank" rel="noreferrer">
             <div>
               <span class="source-pill">IMDb</span>
