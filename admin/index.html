@@ -95,6 +95,9 @@ body:has(#auth:not(.hide)) .auth,body:has(#resetPanel:not(.hide)) .auth{max-heig
 body:has(#auth:not(.hide)) .auth h1,body:has(#resetPanel:not(.hide)) .auth h1{font-size:30px;margin:5px 0}
 body:has(#auth:not(.hide)) .auth .field,body:has(#resetPanel:not(.hide)) .auth .field{margin:7px 0}
 }
+
+/* Mobile: raise the View Site control slightly within the marquee */
+@media(max-width:600px){body:has(#auth:not(.hide)) header>.actions,body:has(#resetPanel:not(.hide)) header>.actions{top:81px}}
 </style></head><body>
 <header><div><div class="brand">BEN PEARCE <span>✦ STUDIO</span></div><div class="sub">PRIVATE PORTFOLIO CONTROL ROOM</div></div><div class="actions" style="margin:0"><a href="../" class="muted">← View site</a><button id="signout" class="btn secondary hide">Sign out</button></div></header>
 <main><div class="cinema" aria-hidden="true"><div class="screen-glow"></div><div class="curtain left"></div><div class="curtain right"></div><div class="valance"></div><div class="floor"></div><div class="proscenium"></div></div>
