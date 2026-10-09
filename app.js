@@ -70,7 +70,6 @@ function chooseAutoplay(){
   if(active&&visibleFraction(active)>.38&&score<visibleFraction(active)+.18)return;
   select(best);
 }
-cards.forEach(card=>{const n=visibleFraction(card);if(n>score){best=card;score=n}});if(best&&score>.6)select(best)}
 cards.forEach(card=>{
   const play=card.querySelector('.preview-play');
   play?.addEventListener('click',()=>{if(active===card)return;select(card)});
