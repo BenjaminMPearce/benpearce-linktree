@@ -157,3 +157,33 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 
 /* r33: bold forest-green wordmark, fine champagne-gold edge, discreet lift. */
 .brand-footer-link strong{font-family:Arial,Helvetica,sans-serif!important;font-weight:900!important;letter-spacing:.015em!important;background:linear-gradient(180deg,#276b46 0%,#174d32 42%,#0c3020 100%)!important;background-clip:text!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;-webkit-text-stroke:.45px #e7c77a!important;text-shadow:none!important;filter:drop-shadow(0 2px 2px rgba(0,0,0,.8)) drop-shadow(0 0 3px rgba(231,199,122,.20))!important}
+
+/* r35 — cinematic editorial showcase; original inline video feed remains intact. */
+.director-cut{position:relative;isolation:isolate;overflow:hidden;width:min(100%,var(--max));min-height:325px;margin:12px auto 30px;border:1px solid rgba(214,183,112,.28);border-radius:22px;background:radial-gradient(ellipse at 83% 28%,#183c48 0%,#101b24 36%,#080b11 80%);box-shadow:0 24px 55px rgba(0,0,0,.35)}
+.director-cut:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(6,10,15,.99) 0%,rgba(6,10,15,.92) 45%,rgba(6,10,15,.23) 100%)}
+.director-art{position:absolute;inset:0 0 0 31%;z-index:-2;opacity:.65;mask-image:linear-gradient(90deg,transparent,#000 35%)}
+.director-art img{width:100%;height:100%;object-fit:cover;object-position:48% 45%;filter:saturate(.86) contrast(1.1)}
+.director-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;min-height:325px;padding:26px 24px}
+.director-kicker{display:flex;align-items:center;gap:8px;margin:0 0 auto;color:#e3c787;font-size:.63rem;font-weight:850;letter-spacing:.15em}
+.on-air-dot{height:7px;width:7px;flex:none;border-radius:50%;background:#e0bd74;box-shadow:0 0 12px #bd9652}
+.edition{color:#8f9ba5;font-size:.56rem;letter-spacing:.08em}
+.director-overline{color:#9aabb6;font-size:.62rem;letter-spacing:.16em;font-weight:800;margin:36px 0 7px}
+.director-content h2{font-size:clamp(1.8rem,6.8vw,2.55rem);letter-spacing:-.055em;line-height:1.04;max-width:350px;margin:0 0 10px;text-wrap:balance}
+.director-content>p:not(.director-kicker):not(.director-overline){max-width:305px;font-size:.82rem;line-height:1.55;color:#bdc5cc;margin:0 0 17px}
+.director-action{display:inline-flex;gap:20px;align-items:center;justify-content:space-between;padding:11px 15px;min-height:44px;border-radius:10px;border:1px solid rgba(230,196,128,.42);background:rgba(25,53,42,.9);color:#f2e6ca;font-size:.8rem;font-weight:800;text-decoration:none}
+.director-action:hover{background:#245b41}
+.showcase-heading{width:min(100%,var(--max));margin:0 auto 12px;display:flex;align-items:end;justify-content:space-between;gap:12px}
+.showcase-eyebrow{font-size:.62rem;letter-spacing:.18em;font-weight:800;color:#c7ac77}
+.showcase-heading h2{font-size:1.7rem;letter-spacing:-.055em;margin:3px 0 0}
+.showcase-period{color:#c9a65e}
+.showcase-count{font-size:.56rem;color:#818b96;letter-spacing:.07em;text-align:right;padding-bottom:5px}
+.collection-nav{width:min(100%,var(--max));margin:0 auto 18px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px}
+.collection-nav::-webkit-scrollbar{display:none}
+.collection-chip{flex:none;min-height:38px;padding:8px 13px;border-radius:999px;border:1px solid rgba(220,224,230,.16);background:#141820;color:#c3c8ce;font-size:.76rem;font-weight:750;cursor:pointer}
+.collection-chip.selected{background:#e9d8b2;color:#141a17;border-color:#e9d8b2}
+.media-card[hidden]{display:none!important}
+.hero{animation:showcase-in .65s ease both}
+.director-cut{animation:showcase-in .7s .08s ease both}
+@keyframes showcase-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:420px){.director-content{padding:21px 18px}.director-art{left:25%;opacity:.45}.director-content h2{max-width:270px}.showcase-count{font-size:.5rem}}
+@media(prefers-reduced-motion:reduce){.hero,.director-cut{animation:none!important}}
