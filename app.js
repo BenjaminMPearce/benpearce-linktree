@@ -1,7 +1,6 @@
 const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
 const shareButton=document.getElementById('shareProfile');
 const shareStatus=document.getElementById('shareStatus');
-const mobileDock=document.querySelector('.mobile-dock');
 const stage=document.getElementById('watchStage');
 const content=document.getElementById('watchContent');
 const heading=document.getElementById('watchHeading');
@@ -14,7 +13,8 @@ let pausedUntil=0;
 let settleTimer=null;
 let lastScrollPosition=window.scrollY;
 let suppressAutoUntilScroll=false;
-const midpoint=()=>window.innerHeight*.5;
+const visibleViewport=()=>{const v=window.visualViewport;return v?{top:v.offsetTop,height:v.height}:{top:0,height:window.innerHeight}};
+const midpoint=()=>{const v=visibleViewport();return v.top+v.height/2};
 function unload(card){
   if(!card)return;
   const iframe=panels.get(card)?.querySelector('iframe.media-embed');
@@ -76,7 +76,7 @@ function candidateAtRest(){
   return cards.find(card=>{
     const rect=card.getBoundingClientRect();
     const center=rect.top+rect.height/2;
-    return Math.abs(center-line)<Math.min(105,window.innerHeight*.16);
+    return Math.abs(center-line)<Math.min(105,visibleViewport().height*.16);
   })||null;
 }
 function update(){
@@ -106,6 +106,7 @@ stage.querySelector('.watch-close').addEventListener('click',()=>{pausedUntil=pe
 addEventListener('keydown',event=>{if(event.key==='Escape'&&active){pausedUntil=performance.now()+850;select(null)}});
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',schedule,{passive:true});
+if(window.visualViewport){window.visualViewport.addEventListener('resize',schedule,{passive:true});window.visualViewport.addEventListener('scroll',schedule,{passive:true})}
 /* Start closed; scrolling or tapping a card opens the first preview. */
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
@@ -114,12 +115,6 @@ if(shareButton)shareButton.addEventListener('click',async()=>{
     else{await navigator.clipboard.writeText(location.href);if(shareStatus)shareStatus.textContent='Link copied.'}
   }catch(error){if(error?.name!=='AbortError'&&shareStatus)shareStatus.textContent='Could not share this link.'}
   setTimeout(()=>{if(shareStatus)shareStatus.textContent=''},1800);
-});
-if(mobileDock)mobileDock.addEventListener('click',event=>{
-  const button=event.target.closest('button[data-dock]');if(!button)return;
-  if(button.dataset.dock==='top')window.scrollTo({top:0,behavior:'smooth'});
-  if(button.dataset.dock==='browse')document.querySelector('.media-feed')?.scrollIntoView({behavior:'smooth',block:'start'});
-  if(button.dataset.dock==='share')shareButton?.click();
 });
 // No automatic player on initial page load.
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
