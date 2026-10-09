@@ -1,113 +1,81 @@
 const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
 const shareButton=document.getElementById('shareProfile');
 const shareStatus=document.getElementById('shareStatus');
-const stage=document.getElementById('watchStage');
-const content=document.getElementById('watchContent');
-const heading=document.getElementById('watchHeading');
-const count=document.getElementById('watchCount');
 const positions=new WeakMap();
-const panels=new Map(cards.map(card=>[card,card.querySelector('.card-expanded')]));
 let active=null;
-let ticking=false;
-let pausedUntil=0;
 let settleTimer=null;
-let lastScrollPosition=window.scrollY;
-let suppressAutoUntilScroll=false;
-const visibleViewport=()=>{const v=window.visualViewport;return v?{top:v.offsetTop,height:v.height}:{top:0,height:window.innerHeight}};
-const midpoint=()=>{const v=visibleViewport();return v.top+v.height/2};
-function unload(card){
+const ratios=new Map();
+const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+function playlist(card){return(card.dataset.playlist||'').split(',').filter(Boolean)}
+function stop(card){
   if(!card)return;
-  const iframe=panels.get(card)?.querySelector('iframe.media-embed');
+  const iframe=card.querySelector('iframe.media-embed');
   if(iframe)iframe.removeAttribute('src');
-  card.classList.remove('loading','media-loaded');
+  card.classList.remove('loading','media-loaded','playing');
 }
-function prepare(card){
-  const playlist=(card.dataset.playlist||'').split(',').filter(Boolean);
-  if(!playlist.length)return;
-  const index=positions.get(card)||0;
-  positions.set(card,(index+1)%playlist.length);
-  count.textContent=(index+1)+' / '+playlist.length;
-  if(card.dataset.source==='tiktok'){
-    const id=playlist[index];
-    const url='https://www.tiktok.com/@bennyp1010/video/'+id;
-    panels.get(card).querySelectorAll('.tiktok-watch').forEach(a=>a.href=url);
-    const embed=panels.get(card).querySelector('iframe.tiktok-embed');
-    if(embed)embed.src='https://www.tiktok.com/player/v1/'+id+'?autoplay=1&muted=1&controls=1&description=0&music_info=0';
-    const episode=panels.get(card).querySelector('.tiktok-episode');
-    if(episode)episode.textContent='Episode '+(index+1)+' of '+playlist.length+' · Watch here or on TikTok ↗';
-    return;
-  }
-  const iframe=panels.get(card).querySelector('iframe.media-embed');
+function load(card,advance=false){
+  const list=playlist(card);
+  if(!list.length)return;
+  let index=positions.get(card)||0;
+  if(advance)index=(index+1)%list.length;
+  positions.set(card,index);
+  const iframe=card.querySelector('iframe.media-embed');
   if(!iframe)return;
-  card.classList.add('loading');
-  iframe.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(playlist[index])+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
+  card.classList.add('loading','playing');
+  card.classList.remove('media-loaded');
   iframe.onload=()=>{card.classList.remove('loading');card.classList.add('media-loaded')};
+  if(card.dataset.source==='tiktok'){
+    const id=list[index];
+    const url='https://www.tiktok.com/@bennyp1010/video/'+id;
+    card.querySelectorAll('.tiktok-watch').forEach(a=>a.href=url);
+    const episode=card.querySelector('.tiktok-episode');
+    if(episode)episode.textContent='Episode '+(index+1)+' of '+list.length;
+    iframe.src='https://www.tiktok.com/player/v1/'+id+'?autoplay=1&muted=1&controls=1&description=0&music_info=0';
+  }else{
+    iframe.src='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(list[index])+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
+  }
 }
 function select(card){
-  if(active===card)return;
-  if(active){
-    unload(active);
-    active.classList.remove('active');
-    const old=panels.get(active);
-    if(old)active.appendChild(old);
-  }
+  if(card===active)return;
+  stop(active);
   active=card;
-  if(!card){
-    stage.classList.remove('open');
-    stage.setAttribute('aria-hidden','true');
-    count.textContent='';
-  }else{
-    const panel=panels.get(card);
-    content.replaceChildren(panel);
-    heading.textContent=card.querySelector('h3')?.textContent||'Now playing';
-    card.classList.add('active');
-    stage.classList.add('open');
-    stage.setAttribute('aria-hidden','false');
-    prepare(card);
-  }
-  cards.forEach(item=>item.querySelector('.card-compact')?.setAttribute('aria-expanded',String(item===active)));
+  if(active)load(active);
 }
-function candidateAtRest(){
-  const feed=document.getElementById('mediaFeed');
-  const bounds=feed.getBoundingClientRect();
-  const line=midpoint();
-  if(bounds.top>line||bounds.bottom<line)return null;
-  // Only select a card genuinely inside the center band, not one long past it.
-  return cards.find(card=>{
-    const rect=card.getBoundingClientRect();
-    const center=rect.top+rect.height/2;
-    return Math.abs(center-line)<Math.min(105,visibleViewport().height*.16);
-  })||null;
+function visibleFraction(card){
+  const rect=card.getBoundingClientRect();
+  const view=window.visualViewport;
+  const top=view?view.offsetTop:0;
+  const bottom=top+(view?view.height:window.innerHeight);
+  return Math.max(0,Math.min(rect.bottom,bottom)-Math.max(rect.top,top))/Math.max(rect.height,1);
 }
-function update(){
-  ticking=false;
-  if(performance.now()<pausedUntil||suppressAutoUntilScroll)return;
-  const chosen=candidateAtRest();
-  // Passing between cards does not dismiss the current video.
-  if(chosen&&chosen!==active)select(chosen);
-  else if(!chosen){
-    const feed=document.getElementById('mediaFeed').getBoundingClientRect();
-    if(feed.bottom<midpoint()-120||feed.top>midpoint()+120)select(null);
-  }
+function choose(){
+  if(document.hidden){select(null);return}
+  let best=null,bestRatio=0;
+  cards.forEach(card=>{
+    const ratio=visibleFraction(card);
+    if(ratio>bestRatio){bestRatio=ratio;best=card}
+  });
+  if(bestRatio<.55){select(null);return}
+  // Avoid switching for tiny changes in visibility.
+  if(active&&visibleFraction(active)>.46&&best!==active&&bestRatio-visibleFraction(active)<.16)return;
+  select(best);
 }
-function schedule(){
-  if(Math.abs(window.scrollY-lastScrollPosition)>2)suppressAutoUntilScroll=false;
-  lastScrollPosition=window.scrollY;
-  clearTimeout(settleTimer);
-  settleTimer=setTimeout(()=>requestAnimationFrame(update),380);
-}
+function schedule(){clearTimeout(settleTimer);settleTimer=setTimeout(choose,260)}
+const observer=new IntersectionObserver(schedule,{threshold:[0,.25,.45,.55,.7,.85,1]});
 cards.forEach(card=>{
-  const button=card.querySelector('.card-compact[role="button"]');
-  const toggle=()=>{clearTimeout(settleTimer);pausedUntil=performance.now()+850;suppressAutoUntilScroll=true;select(active===card?null:card)};
-  button?.addEventListener('click',toggle);
-  button?.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}});
+  observer.observe(card);
+  card.querySelector('.next-video')?.addEventListener('click',()=>{
+    if(active!==card){select(card)}else{stop(card);load(card,true)}
+  });
 });
-stage.querySelector('.watch-close').addEventListener('click',()=>{pausedUntil=performance.now()+850;suppressAutoUntilScroll=true;clearTimeout(settleTimer);select(null)});
-addEventListener('keydown',event=>{if(event.key==='Escape'&&active){pausedUntil=performance.now()+850;select(null)}});
 addEventListener('scroll',schedule,{passive:true});
 addEventListener('resize',schedule,{passive:true});
-if(window.visualViewport){window.visualViewport.addEventListener('resize',schedule,{passive:true});window.visualViewport.addEventListener('scroll',schedule,{passive:true})}
-/* Start closed; scrolling or tapping a card opens the first preview. */
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',schedule,{passive:true});
+  window.visualViewport.addEventListener('scroll',schedule,{passive:true});
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)select(null);else schedule()});
+requestAnimationFrame(schedule);
 if(shareButton)shareButton.addEventListener('click',async()=>{
   const shareData={title:'Benjamin Pearce',text:'Benjamin Pearce — films, reviews, sketches and production work.',url:location.href};
   try{
@@ -116,5 +84,4 @@ if(shareButton)shareButton.addEventListener('click',async()=>{
   }catch(error){if(error?.name!=='AbortError'&&shareStatus)shareStatus.textContent='Could not share this link.'}
   setTimeout(()=>{if(shareStatus)shareStatus.textContent=''},1800);
 });
-// No automatic player on initial page load.
 if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
