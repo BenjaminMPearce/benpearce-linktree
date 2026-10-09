@@ -187,3 +187,24 @@ footer{padding-bottom:calc(24px + env(safe-area-inset-bottom))!important}
 @keyframes showcase-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:420px){.director-content{padding:21px 18px}.director-art{left:25%;opacity:.45}.director-content h2{max-width:270px}.showcase-count{font-size:.5rem}}
 @media(prefers-reduced-motion:reduce){.hero,.director-cut{animation:none!important}}
+
+/* r37: Premiere Experience — lighting, tactile poster overlays, and episode counters. */
+.hero{position:relative;isolation:isolate}
+.hero:before{content:"";position:absolute;inset:-38px -12px auto;z-index:-1;height:260px;pointer-events:none;background:radial-gradient(ellipse at 50% 35%,rgba(46,117,158,.16),transparent 66%);animation:premiere-breathe 7s ease-in-out infinite alternate}
+.premiere-portrait{position:relative;box-shadow:0 0 0 1px rgba(211,185,126,.26),0 0 30px rgba(36,112,160,.24),0 18px 42px rgba(0,0,0,.5)!important}
+.premiere-portrait:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 22px rgba(67,153,201,.13)}
+.director-cut:after{content:"";position:absolute;inset:-40% -20%;z-index:-1;pointer-events:none;background:linear-gradient(112deg,transparent 32%,rgba(102,170,197,.07) 49%,transparent 62%);transform:translateX(-30%);animation:premiere-light 10s ease-in-out infinite alternate}
+.media-card .preview-frame{isolation:isolate}
+.media-card .embed-poster{overflow:hidden}
+.media-card .embed-poster:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(222,195,137,.10),transparent 32%,rgba(0,0,0,.24));}
+.media-card .embed-poster strong{position:relative;z-index:1;text-shadow:0 3px 18px rgba(0,0,0,.5)}
+.media-card .embed-poster span,.media-card .embed-poster small{position:relative;z-index:1}
+.media-card .preview-frame:before{content:"▶";position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:48px;height:48px;padding-left:3px;border-radius:50%;border:1px solid rgba(232,204,150,.5);background:rgba(10,16,23,.62);color:#f0dcae;font-size:1.1rem;pointer-events:none;box-shadow:0 6px 25px rgba(0,0,0,.4);opacity:.9}
+.media-card.playing .preview-frame:before{opacity:0}
+.media-card .premiere-frame-label{position:absolute;top:12px;left:12px;z-index:2;font-size:.55rem;letter-spacing:.13em;font-weight:850;color:#e2c992;background:rgba(8,12,18,.62);border:1px solid rgba(226,201,146,.24);border-radius:5px;padding:6px 8px;pointer-events:none}
+.media-card.playing .premiere-frame-label{opacity:0}
+.video-counter{margin-left:auto;font-size:.69rem;letter-spacing:.1em;font-weight:800;color:#d3b778;font-variant-numeric:tabular-nums}
+.media-card .next-video{margin-left:0!important}
+@keyframes premiere-breathe{from{opacity:.45;transform:scale(.96)}to{opacity:1;transform:scale(1.06)}}
+@keyframes premiere-light{from{transform:translateX(-40%)}to{transform:translateX(40%)}}
+@media(prefers-reduced-motion:reduce){.hero:before,.director-cut:after{animation:none!important}}
