@@ -2,6 +2,7 @@ const cards=[...document.querySelectorAll('.media-card:not(.static-card)')];
 const shareButton=document.getElementById('shareProfile');
 const shareStatus=document.getElementById('shareStatus');
 const positions=new WeakMap();
+const visited=new WeakSet();
 let active=null;
 let settleTimer=null;
 const ratios=new Map();
@@ -39,7 +40,11 @@ function select(card){
   if(card===active)return;
   stop(active);
   active=card;
-  if(active)load(active);
+  if(active){
+    const advance=visited.has(active);
+    visited.add(active);
+    load(active,advance);
+  }
 }
 function visibleFraction(card){
   const rect=card.getBoundingClientRect();
